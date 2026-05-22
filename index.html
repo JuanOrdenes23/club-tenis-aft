@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Club Tenis AFT</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#f4f6fb;font-family:'Segoe UI',sans-serif;color:#1b1b1b}
+    .app{max-width:480px;margin:0 auto;min-height:100vh}
+    .header{background:linear-gradient(135deg,#0a1f5c 0%,#1a3a8f 100%);color:#fff;padding-top:16px;box-shadow:0 3px 12px rgba(0,0,0,0.2);position:relative;overflow:hidden}
+    .header-top{padding:0 16px 14px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .header-info .liga{font-size:11px;letter-spacing:2px;opacity:.7;text-transform:uppercase}
+    .header-info .count{font-size:11px;opacity:.6;margin-top:2px}
+    .tabs{display:flex;position:relative;z-index:1}
+    .tab-btn{flex:1;padding:10px 4px;border:none;cursor:pointer;font-size:11px;background:transparent;color:#fff;border-bottom:3px solid transparent;transition:all .2s;text-align:center}
+    .tab-btn.active{background:rgba(255,255,255,0.15);font-weight:700;border-bottom:3px solid #f0c040}
+    .tab-icon{font-size:18px}
+    .content{padding:16px 14px;position:relative}
+    .court-bg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.045;pointer-events:none;z-index:0;max-width:480px;width:100%}
+    .content-inner{position:relative;z-index:1}
+    .section-title{font-weight:700;font-size:16px;color:#0a1f5c;margin-bottom:2px}
+    .section-sub{font-size:13px;color:#888;margin-bottom:14px;letter-spacing:1px}
+    .ranking-list{display:flex;flex-direction:column;gap:8px}
+    .rank-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);display:flex;align-items:center;gap:12px}
+    .rank-pos{min-width:32px;text-align:center;font-weight:700}
+    .rank-name{font-weight:700;font-size:14px}
+    .rank-detail{font-size:11px;color:#777;margin-top:2px}
+    .rank-pts{text-align:right}
+    .rank-pts-val{font-weight:800;font-size:20px;color:#0a1f5c}
+    .rank-pts-lbl{font-size:10px;color:#aaa}
+    .card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+    .card-title{font-weight:600;font-size:13px;color:#0a1f5c;margin-bottom:8px}
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+    .stat-card{background:#fff;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+    .stat-icon{font-size:22px}
+    .stat-val{font-weight:800;font-size:22px}
+    .stat-lbl{font-size:11px;color:#888}
+    .bar-wrap{display:flex;border-radius:8px;overflow:hidden;height:28px}
+    .bar-left{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+    .bar-right{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+    .bar-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:12px}
+    .history-item{border-radius:10px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);margin-bottom:8px}
+    .history-names{font-weight:700;font-size:13px}
+    .history-detail{font-size:11px;color:#888;margin-top:2px}
+    .history-result{font-size:11px;margin-top:3px;font-weight:600}
+    .player-history-item{padding-left:10px;margin-bottom:10px}
+    .player-history-name{font-size:13px;font-weight:600}
+    .player-history-date{font-size:11px;color:#999}
+    select,input{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid #c5d3f0;font-size:14px;outline:none;background:#f8faff;margin-bottom:16px}
+    .racket-svg{position:absolute;pointer-events:none}
+  </style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+const MATCHES = [
+  {id:1,w:"Álvaro Barros",l:"Carlos Villablanca",date:"2026-03-07",score:"6-2 4-6 6-2",wS:2,lS:1},
+  {id:2,w:"Arturo Rodriguez",l:"Rodrigo Silva",date:"2026-03-07",score:"6-1 6-1",wS:2,lS:0},
+  {id:3,w:"Juan Díaz Navarrete",l:"Juan Órdenes",date:"2026-03-07",score:"6-0 6-3",wS:2,lS:0},
+  {id:4,w:"Jorge Castro",l:"Eduardo Hidalgo",date:"2026-03-07",score:"6-1 6-0",wS:2,lS:0},
+  {id:5,w:"Luis Valdez",l:"Carlos Neira",date:"2026-03-07",score:"6-3 6-4",wS:2,lS:0},
+  {id:6,w:"Victor Carriel",l:"Rodrigo Tapia",date:"2026-03-08",score:"6-4 6-4",wS:2,lS:0},
+  {id:7,w:"Francisco Lobos",l:"Isidro de la Contanza",date:"2026-03-08",score:"6-2 6-4",wS:2,lS:0},
+  {id:8,w:"Jesús Donoso",l:"Juan Díaz Navarrete",date:"2026-03-08",score:"6-3 7-5",wS:2,lS:0},
+  {id:9,w:"Ariel Palma",l:"Jorge Arroniz",date:"2026-03-04",score:"6-2 6-0",wS:2,lS:0},
+  {id:10,w:"Jorge Castro",l:"Rodrigo Tapia",date:"2026-03-04",score:"6-2 6-4",wS:2,lS:0},
+  {id:11,w:"Adrián Muñoz",l:"César González",date:"2026-03-04",score:"6-3 6-1",wS:2,lS:0},
+  {id:12,w:"Eduardo Hidalgo",l:"Carlos Neira",date:"2026-03-04",score:"6-0 6-1",wS:2,lS:0},
+  {id:13,w:"Juan Órdenes",l:"Álvaro Barros",date:"2026-03-04",score:"7-5 6-2",wS:2,lS:0},
+  {id:14,w:"Isidro de la Contanza",l:"Carlos Villablanca",date:"2026-03-04",score:"7-5 4-6 10-2",wS:2,lS:1},
+  {id:15,w:"Juan Díaz Navarrete",l:"Luis Valdez",date:"2026-03-04",score:"7-5 6-3",wS:2,lS:0},
+  {id:16,w:"Rodrigo Silva",l:"Adrián Muñoz",date:"2026-03-05",score:"6-4 6-4",wS:2,lS:0},
+  {id:17,w:"Juan Órdenes",l:"Carlos Neira",date:"2026-03-05",score:"6-4 0-6 7-6",wS:2,lS:1},
+  {id:18,w:"Victor Carriel",l:"Eduardo Hidalgo",date:"2026-03-05",score:"6-2 6-2",wS:2,lS:0},
+  {id:19,w:"Juan Díaz Navarrete",l:"César González",date:"2026-03-05",score:"6-4 7-6",wS:2,lS:0},
+  {id:20,w:"Luis Valdez",l:"Álvaro Barros",date:"2026-03-05",score:"6-3 7-6",wS:2,lS:0},
+  {id:21,w:"Juan Díaz Sánchez",l:"Álvaro Barros",date:"2026-03-14",score:"6-4 7-5",wS:2,lS:0},
+  {id:22,w:"Jorge Castro",l:"Isidro de la Contanza",date:"2026-03-14",score:"6-1 6-4",wS:2,lS:0},
+  {id:23,w:"Francisco Lobos",l:"Luis Valdez",date:"2026-03-14",score:"6-1 6-3",wS:2,lS:0},
+  {id:24,w:"David Vásquez",l:"Eduardo Hidalgo",date:"2026-03-14",score:"6-3 6-4",wS:2,lS:0},
+  {id:25,w:"Carlos Villablanca",l:"Carlos Neira",date:"2026-03-14",score:"6-1 1-6 6-2",wS:2,lS:1},
+  {id:26,w:"Juan Órdenes",l:"Adrián Muñoz",date:"2026-03-14",score:"7-6 6-1",wS:2,lS:0},
+  {id:27,w:"Victor Carriel",l:"Jaime Mendoza",date:"2026-03-14",score:"6-4 6-2",wS:2,lS:0},
+  {id:28,w:"Juan Díaz Navarrete",l:"Jorge Arroniz",date:"2026-03-14",score:"4-6 7-5 10-4",wS:2,lS:1},
+  {id:29,w:"Rodrigo Tapia",l:"Carlos Neira",date:"2026-03-21",score:"6-4 6-3",wS:2,lS:0},
+  {id:30,w:"Victor Carriel",l:"David Vásquez",date:"2026-03-21",score:"7-5 7-6",wS:2,lS:0},
+  {id:31,w:"Francisco Lobos",l:"Álvaro Barros",date:"2026-03-21",score:"6-4 6-1",wS:2,lS:0},
+  {id:32,w:"Eduardo Hidalgo",l:"Juan Díaz Navarrete",date:"2026-03-21",score:"6-3 6-1",wS:2,lS:0},
+  {id:33,w:"Carlos Villablanca",l:"Luis Valdez",date:"2026-03-21",score:"6-2 6-2",wS:2,lS:0},
+  {id:34,w:"Juan Órdenes",l:"Rodrigo Silva",date:"2026-03-21",score:"6-0 7-6",wS:2,lS:0},
+  {id:35,w:"Adrián Muñoz",l:"Juan Díaz Sánchez",date:"2026-03-21",score:"6-2 6-3",wS:2,lS:0},
+  {id:36,w:"Jesús Donoso",l:"Jorge Arroniz",date:"2026-03-21",score:"6-2 0-6 10-6",wS:2,lS:1},
+  {id:37,w:"Carlos Villablanca",l:"Juan Órdenes",date:"2026-03-28",score:"6-4 6-3",wS:2,lS:0},
+  {id:38,w:"Jorge Arroniz",l:"Álvaro Barros",date:"2026-03-28",score:"6-3 7-6",wS:2,lS:0},
+  {id:39,w:"Jorge Castro",l:"Patricio Mahla",date:"2026-03-28",score:"6-2 6-1",wS:2,lS:0},
+  {id:40,w:"Eduardo Hidalgo",l:"Rodrigo Silva",date:"2026-03-28",score:"6-4 6-4",wS:2,lS:0},
+  {id:41,w:"César González",l:"Juan Díaz Sánchez",date:"2026-03-28",score:"6-1 6-0",wS:2,lS:0},
+  {id:42,w:"Patricio Mahla",l:"Rodrigo Tapia",date:"2026-03-29",score:"6-1 7-6",wS:2,lS:0},
+  {id:43,w:"Victor Carriel",l:"Carlos Neira",date:"2026-03-29",score:"6-1 7-6",wS:2,lS:0},
+  {id:44,w:"Adrián Muñoz",l:"Álvaro Barros",date:"2026-03-29",score:"4-6 6-1 6-3",wS:2,lS:1},
+  {id:45,w:"Isidro de la Contanza",l:"Luis Valdez",date:"2026-03-29",score:"6-1 6-4",wS:2,lS:0},
+  {id:46,w:"Rodrigo Silva",l:"Francisco Lobos",date:"2026-04-11",score:"4-6 6-3 7-6",wS:2,lS:1},
+  {id:47,w:"Rodrigo Tapia",l:"Carlos Villablanca",date:"2026-04-11",score:"7-6 3-6 10-7",wS:2,lS:1},
+  {id:48,w:"Ariel Palma",l:"Rodrigo Silva",date:"2026-04-11",score:"6-1 6-1",wS:2,lS:0},
+  {id:49,w:"Victor Carriel",l:"Adrián Muñoz",date:"2026-04-11",score:"6-2 6-4",wS:2,lS:0},
+  {id:50,w:"Juan Díaz Navarrete",l:"Juan Díaz Sánchez",date:"2026-04-11",score:"2-6 6-4 10-8",wS:2,lS:1},
+  {id:51,w:"Jorge Arroniz",l:"César González",date:"2026-04-12",score:"7-6 6-2",wS:2,lS:0},
+  {id:52,w:"Adrián Muñoz",l:"Luis Valdez",date:"2026-04-12",score:"6-1 6-3",wS:2,lS:0},
+  {id:53,w:"Álvaro Barros",l:"Isidro de la Contanza",date:"2026-04-12",score:"6-3 6-3",wS:2,lS:0},
+  {id:54,w:"Eduardo Hidalgo",l:"Rodrigo Tapia",date:"2026-04-18",score:"6-4 6-3",wS:2,lS:0},
+  {id:55,w:"César González",l:"Rodrigo Silva",date:"2026-04-18",score:"4-6 6-4 7-6",wS:2,lS:1},
+  {id:56,w:"Jorge Castro",l:"David Vásquez",date:"2026-04-18",score:"7-5 6-4",wS:2,lS:0},
+  {id:57,w:"Juan Díaz Navarrete",l:"Adrián Muñoz",date:"2026-04-18",score:"6-4 0-6 6-2",wS:2,lS:1},
+  {id:58,w:"Jorge Arroniz",l:"Juan Díaz Sánchez",date:"2026-04-19",score:"6-0 6-3",wS:2,lS:0},
+  {id:59,w:"Isidro de la Contanza",l:"Carlos Neira",date:"2026-04-18",score:"6-2 6-2",wS:2,lS:0},
+  {id:60,w:"Juan Díaz Navarrete",l:"Álvaro Barros",date:"2026-04-18",score:"6-3 7-5",wS:2,lS:0},
+  {id:61,w:"Luis Valdez",l:"Juan Órdenes",date:"2026-04-18",score:"6-0 4-6 10-6",wS:2,lS:1},
+  {id:62,w:"Juan Órdenes",l:"Rodrigo Tapia",date:"2026-04-25",score:"6-4 6-3",wS:2,lS:0},
+  {id:63,w:"David Vásquez",l:"Carlos Villablanca",date:"2026-04-25",score:"6-3 6-1",wS:2,lS:0},
+  {id:64,w:"Francisco Lobos",l:"Eduardo Hidalgo",date:"2026-04-25",score:"7-6 3-6 11-9",wS:2,lS:1},
+  {id:65,w:"Rodrigo Silva",l:"Juan Díaz Navarrete",date:"2026-04-26",score:"0-6 7-5 10-8",wS:2,lS:1},
+  {id:66,w:"Jorge Castro",l:"Juan Díaz Navarrete",date:"2026-05-02",score:"6-3 2-6 10-6",wS:2,lS:1},
+  {id:67,w:"Isidro de la Contanza",l:"Rodrigo Tapia",date:"2026-05-02",score:"6-3 2-6 10-8",wS:2,lS:1},
+  {id:68,w:"Carlos Neira",l:"Rodrigo Silva",date:"2026-05-02",score:"6-4 1-6 7-5",wS:2,lS:1},
+  {id:69,w:"Victor Carriel",l:"Juan Órdenes",date:"2026-05-02",score:"6-1 7-5",wS:2,lS:0},
+  {id:70,w:"Ariel Palma",l:"Francisco Lobos",date:"2026-05-02",score:"6-1 6-3",wS:2,lS:0},
+  {id:71,w:"César González",l:"Luis Valdez",date:"2026-05-02",score:"6-1 6-4",wS:2,lS:0},
+  {id:72,w:"Jesús Donoso",l:"Álvaro Barros",date:"2026-05-03",score:"6-1 6-4",wS:2,lS:0},
+  {id:73,w:"Eduardo Hidalgo",l:"Álvaro Barros",date:"2026-05-09",score:"6-2 6-0",wS:2,lS:0},
+  {id:74,w:"Rodrigo Tapia",l:"Rodrigo Silva",date:"2026-05-09",score:"7-5 6-2",wS:2,lS:0},
+  {id:75,w:"Juan Díaz Navarrete",l:"Carlos Villablanca",date:"2026-05-09",score:"3-6 6-1 6-1",wS:2,lS:1},
+  {id:76,w:"Ariel Palma",l:"Álvaro Barros",date:"2026-05-09",score:"6-0 6-1",wS:2,lS:0},
+  {id:77,w:"Juan Órdenes",l:"Francisco Lobos",date:"2026-05-09",score:"6-4 6-3",wS:2,lS:0},
+  {id:78,w:"Jorge Arroniz",l:"Luis Valdez",date:"2026-05-09",score:"6-4 6-2",wS:2,lS:0},
+  {id:79,w:"Jesús Donoso",l:"Rodrigo Silva",date:"2026-05-10",score:"6-2 7-5",wS:2,lS:0},
+  {id:80,w:"Juan Díaz Navarrete",l:"Isidro de la Contanza",date:"2026-05-10",score:"6-2 6-2",wS:2,lS:0},
+  {id:81,w:"Francisco Lobos",l:"Carlos Villablanca",date:"2026-05-16",score:"6-3 7-5",wS:2,lS:0},
+  {id:82,w:"Victor Carriel",l:"Juan Díaz Navarrete",date:"2026-05-16",score:"6-3 6-7 7-4",wS:2,lS:1},
+  {id:83,w:"César González",l:"Álvaro Barros",date:"2026-05-16",score:"6-2 6-0",wS:2,lS:0},
+  {id:84,w:"Jorge Arroniz",l:"Juan Órdenes",date:"2026-05-16",score:"7-6 6-2",wS:2,lS:0},
+  {id:85,w:"Jorge Castro",l:"Rodrigo Silva",date:"2026-05-17",score:"6-2 6-1",wS:2,lS:0},
+  {id:86,w:"Patricio Mahla",l:"Rodrigo Silva",date:"2026-03-27",score:"6-2 6-2",wS:2,lS:0},
+  {id:87,w:"Jorge Castro",l:"Francisco Lobos",date:"2026-03-26",score:"6-3 6-1",wS:2,lS:0},
+  {id:88,w:"Ariel Palma",l:"Carlos Villablanca",date:"2026-05-21",score:"6-0 6-0",wS:2,lS:0},
+  {id:89,w:"David Vásquez",l:"Juan Órdenes",date:"2026-05-21",score:"6-2 6-2",wS:2,lS:0},
+];
+
+function buildRanking(){
+  const p={};
+  const e=n=>{if(!p[n])p[n]={name:n,pts:0,played:0,won:0,lost:0};};
+  MATCHES.forEach(m=>{
+    e(m.w);e(m.l);
+    p[m.w].played++;p[m.l].played++;
+    p[m.w].pts+=10;p[m.w].won++;p[m.l].lost++;
+  });
+  return Object.values(p).sort((a,b)=>b.pts-a.pts||b.won-a.won);
+}
+
+function pct(a,b){return (a+b)?Math.round(a/(a+b)*100):0;}
+
+let tab='ranking', search='', selPlayer='';
+
+function logo(size){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#061440"/><stop offset="100%" stop-color="#1a3a8f"/>
+    </linearGradient></defs>
+    <rect width="120" height="120" rx="16" fill="url(#lg)"/>
+    <text x="60" y="22" text-anchor="middle" fill="white" font-size="11" font-family="Arial" letter-spacing="2" opacity="0.9">CLUB TENIS</text>
+    <text x="60" y="78" text-anchor="middle" fill="white" font-size="58" font-weight="900" font-family="Arial Black,sans-serif" letter-spacing="2">AFT</text>
+    <line x1="18" y1="92" x2="72" y2="92" stroke="white" stroke-width="2" opacity="0.7"/>
+    <line x1="22" y1="98" x2="68" y2="98" stroke="white" stroke-width="1.5" opacity="0.5"/>
+    <circle cx="90" cy="97" r="13" fill="none" stroke="white" stroke-width="2.5" opacity="0.9"/>
+    <path d="M80 90 Q90 85 100 90" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/>
+    <path d="M80 104 Q90 109 100 104" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/>
+  </svg>`;
+}
+
+function racketSVG(w,h,transform,opacity){
+  return `<svg class="racket-svg" style="width:${w}px;height:${h}px;transform:${transform};opacity:${opacity}" viewBox="0 0 70 160">
+    <ellipse cx="35" cy="45" rx="26" ry="38" fill="none" stroke="white" stroke-width="4"/>
+    <path d="M22 80 L31 105 L39 105 L48 80" fill="none" stroke="white" stroke-width="3.5"/>
+    <rect x="31" y="104" width="8" height="38" rx="3" fill="none" stroke="white" stroke-width="3.5"/>
+    <line x1="31" y1="112" x2="39" y2="112" stroke="white" stroke-width="1.5" opacity="0.6"/>
+    <line x1="31" y1="120" x2="39" y2="120" stroke="white" stroke-width="1.5" opacity="0.6"/>
+    <line x1="31" y1="128" x2="39" y2="128" stroke="white" stroke-width="1.5" opacity="0.6"/>
+    <rect x="29" y="140" width="12" height="4" rx="2" fill="white" opacity="0.7"/>
+    <line x1="23" y1="12" x2="20" y2="78" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="28" y1="8" x2="26" y2="80" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="33" y1="7" x2="32" y2="81" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="38" y1="7" x2="38" y2="81" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="43" y1="8" x2="44" y2="80" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="10" y1="20" x2="60" y2="20" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="9" y1="28" x2="61" y2="28" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="9" y1="36" x2="61" y2="36" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="10" y1="44" x2="60" y2="44" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="11" y1="52" x2="59" y2="52" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="13" y1="60" x2="57" y2="60" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="16" y1="68" x2="54" y2="68" stroke="white" stroke-width="0.8" opacity="0.5"/>
+    <line x1="20" y1="76" x2="50" y2="76" stroke="white" stroke-width="0.8" opacity="0.5"/>
+  </svg>`;
+}
+
+function courtSVG(){
+  return `<svg class="court-bg" viewBox="0 0 480 700" xmlns="http://www.w3.org/2000/svg">
+    <rect x="60" y="60" width="360" height="580" fill="none" stroke="#0a1f5c" stroke-width="5"/>
+    <rect x="100" y="60" width="280" height="580" fill="none" stroke="#0a1f5c" stroke-width="3"/>
+    <line x1="60" y1="350" x2="420" y2="350" stroke="#0a1f5c" stroke-width="4"/>
+    <line x1="60" y1="220" x2="420" y2="220" stroke="#0a1f5c" stroke-width="2"/>
+    <line x1="240" y1="60" x2="240" y2="220" stroke="#0a1f5c" stroke-width="2"/>
+    <line x1="60" y1="480" x2="420" y2="480" stroke="#0a1f5c" stroke-width="2"/>
+    <line x1="240" y1="480" x2="240" y2="640" stroke="#0a1f5c" stroke-width="2"/>
+    <line x1="55" y1="340" x2="55" y2="360" stroke="#0a1f5c" stroke-width="5"/>
+    <line x1="425" y1="340" x2="425" y2="360" stroke="#0a1f5c" stroke-width="5"/>
+  </svg>`;
+}
+
+function statBar(p,lL,lR,cL,cR){
+  const cl=cL||'#3a7bd5', cr=cR||'#e05252';
+  const r=100-p;
+  return `<div class="bar-wrap">
+    ${p>0?`<div class="bar-left" style="width:${p}%;background:${cl}">${p}%</div>`:''}
+    ${r>0?`<div class="bar-right" style="width:${r}%;background:${cr}">${r}%</div>`:''}
+  </div>
+  <div class="bar-labels">
+    <span style="color:${cl}">✅ ${lL}</span>
+    <span style="color:${cr}">❌ ${lR}</span>
+  </div>`;
+}
+
+function renderRanking(){
+  const ranking=buildRanking();
+  const medals=['🥇','🥈','🥉'];
+  const borderColors=['#f9c74f','#adb5bd','#cd7f32'];
+  return `
+    <div class="section-title">🏆 Escalerilla General</div>
+    <div class="section-sub">Liga 2026</div>
+    <div class="ranking-list">
+      ${ranking.map((p,i)=>`
+        <div class="rank-card" style="border-left:5px solid ${i<3?borderColors[i]:'#0a1f5c'}">
+          <div class="rank-pos" style="font-size:${i<3?22:15}px">${i<3?medals[i]:'#'+(i+1)}</div>
+          <div style="flex:1">
+            <div class="rank-name">${p.name}</div>
+            <div class="rank-detail">${p.played} PJ · ${p.won}G / ${p.lost}P · ${p.played?Math.round(p.won/p.played*100):0}%</div>
+          </div>
+          <div class="rank-pts">
+            <div class="rank-pts-val">${p.pts}</div>
+            <div class="rank-pts-lbl">pts</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderStats(){
+  const players=[...new Set(MATCHES.flatMap(m=>[m.w,m.l]))].sort();
+  let body='';
+  if(selPlayer){
+    const pm=MATCHES.filter(m=>m.w===selPlayer||m.l===selPlayer);
+    const pw=pm.filter(m=>m.w===selPlayer).length;
+    const pl=pm.length-pw;
+    const p=pct(pw,pl);
+    const sW=pm.reduce((a,m)=>a+(m.w===selPlayer?m.wS:m.lS),0);
+    const sL=pm.reduce((a,m)=>a+(m.w===selPlayer?m.lS:m.wS),0);
+    const pS=pct(sW,sL);
+    const sorted=[...pm].sort((a,b)=>b.date.localeCompare(a.date));
+    body=`
+      <div class="stat-grid">
+        ${[['🎾','#0a1f5c',pm.length,'Partidos'],['⭐','#e9a800',pw*10,'Puntos'],['✅','#3a7bd5',pw,'Ganados'],['❌','#e05252',pl,'Perdidos']].map(([ic,c,v,l])=>`
+          <div class="stat-card">
+            <div class="stat-icon">${ic}</div>
+            <div class="stat-val" style="color:${c}">${v}</div>
+            <div class="stat-lbl">${l}</div>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="card-title">% Victorias vs Derrotas</div>
+        ${statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')}
+      </div>
+      <div class="card">
+        <div class="card-title">% Sets Ganados vs Perdidos</div>
+        ${statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')}
+      </div>
+      <div class="card">
+        <div class="card-title">Historial de partidos</div>
+        ${sorted.map(m=>{
+          const won=m.w===selPlayer;
+          const rival=won?m.l:m.w;
+          return `<div class="player-history-item" style="border-left:4px solid ${won?'#3a7bd5':'#e05252'}">
+            <div class="player-history-name">vs ${rival} <span style="font-weight:400;color:#888">— ${m.score}</span></div>
+            <div class="player-history-date">${m.date} · ${won?'✅ Victoria (+10 pts)':'❌ Derrota (0 pts)'}</div>
+          </div>`;
+        }).join('')}
+      </div>`;
+  }
+  return `
+    <div class="section-title">📊 Estadísticas por Jugador</div>
+    <select id="playerSelect" onchange="selPlayer=this.value;render()">
+      <option value="">— Selecciona un jugador —</option>
+      ${players.map(p=>`<option value="${p}" ${p===selPlayer?'selected':''}>${p}</option>`).join('')}
+    </select>
+    ${body}`;
+}
+
+function renderHistory(){
+  const filtered=search
+    ?MATCHES.filter(m=>m.w.toLowerCase().includes(search.toLowerCase())||m.l.toLowerCase().includes(search.toLowerCase()))
+    :MATCHES;
+  const sorted=[...filtered].sort((a,b)=>b.date.localeCompare(a.date));
+  return `
+    <div class="section-title">📋 Historial (${MATCHES.length} partidos)</div>
+    <input type="text" placeholder="🔍 Buscar jugador..." value="${search}" oninput="search=this.value;render()" style="margin-bottom:14px"/>
+    <div>
+      ${sorted.map(m=>`
+        <div class="history-item" style="background:#fff;border-left:4px solid #3a7bd5">
+          <div class="history-names">${m.w} <span style="color:#bbb;font-weight:400">vs</span> ${m.l}</div>
+          <div class="history-detail">📅 ${m.date} · 🏟️ Arcilla · <b>${m.score}</b></div>
+          <div class="history-result" style="color:#3a7bd5">✅ Ganó ${m.w}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function render(){
+  const ranking=buildRanking();
+  const tabs=[['ranking','🏆','Ranking'],['stats','📊','Stats'],['history','📋','Historial']];
+  document.getElementById('app').innerHTML=`
+    <div class="app">
+      <div class="header">
+        ${racketSVG(140,200,'rotate(-35deg) translate(-20px,170px)',0.09)}
+        ${racketSVG(130,190,'rotate(30deg) translate(60px,-10px)',0.09)}
+        <div class="header-top">
+          <div class="header-info">
+            <div class="liga">Liga 2026</div>
+            <div class="count">${MATCHES.length} partidos · ${ranking.length} jugadores</div>
+          </div>
+          ${logo(72)}
+        </div>
+        <div class="tabs">
+          ${tabs.map(([k,ic,l])=>`
+            <button class="tab-btn ${tab===k?'active':''}" onclick="tab='${k}';render()">
+              <div class="tab-icon">${ic}</div>
+              <div>${l}</div>
+            </button>`).join('')}
+        </div>
+      </div>
+      <div class="content">
+        ${courtSVG()}
+        <div class="content-inner">
+          ${tab==='ranking'?renderRanking():tab==='stats'?renderStats():renderHistory()}
+        </div>
+      </div>
+    </div>`;
+}
+
+render();
+</script>
+</body>
+</html>
