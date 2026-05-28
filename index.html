@@ -49,6 +49,18 @@
     .player-history-date{font-size:11px;color:#999}
     select,input{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid #c5d3f0;font-size:14px;outline:none;background:#f8faff;margin-bottom:16px}
     .racket-svg{position:absolute;pointer-events:none}
+    .ball{position:absolute;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#d4f542,#a8cc00);box-shadow:0 2px 6px rgba(0,0,0,0.3);z-index:2;pointer-events:none}
+    .ball::before,.ball::after{content:'';position:absolute;border:1.5px solid rgba(255,255,255,0.5);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
+    .ball::before{width:60%;height:100%;border-left-color:transparent;border-right-color:transparent}
+    .ball::after{width:100%;height:60%;border-top-color:transparent;border-bottom-color:transparent}
+    @keyframes bounce{
+      0%{left:10%;top:8px;transform:scale(1)}
+      25%{top:28px;transform:scale(0.95)}
+      50%{left:75%;top:8px;transform:scale(1)}
+      75%{top:28px;transform:scale(0.95)}
+      100%{left:10%;top:8px;transform:scale(1)}
+    }
+    .ball{animation:bounce 3s ease-in-out infinite}
   </style>
 </head>
 <body>
@@ -331,6 +343,7 @@ function render(){
       <div class="header">
         ${racketSVG(140,200,'rotate(-35deg) translate(-20px,170px)',0.09)}
         ${racketSVG(130,190,'rotate(30deg) translate(60px,-10px)',0.09)}
+        <div class="ball"></div>
         <div class="header-top">
           <div class="header-info">
             <div class="liga">Liga 2026</div>
