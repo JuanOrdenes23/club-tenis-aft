@@ -189,7 +189,13 @@ function buildRanking(){
     p[m.w].played++;p[m.l].played++;
     p[m.w].pts+=10;p[m.w].won++;p[m.l].lost++;
   });
-  return Object.values(p).sort((a,b)=>b.pts-a.pts||b.won-a.won);
+  return Object.values(p).sort((a,b)=>{
+    if(b.pts !== a.pts) return b.pts - a.pts;
+    const pctA = a.played ? a.won/a.played : 0;
+    const pctB = b.played ? b.won/b.played : 0;
+    if(pctB !== pctA) return pctB - pctA;
+    return b.won - a.won;
+  });
 }
 
 function pct(a,b){return (a+b)?Math.round(a/(a+b)*100):0;}
