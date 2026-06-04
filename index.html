@@ -53,7 +53,10 @@
     .rank-card.top2{border:1px solid rgba(173,181,189,0.3);background:rgba(173,181,189,0.06)}
     .rank-card.top3{border:1px solid rgba(205,127,50,0.3);background:rgba(205,127,50,0.06)}
     .rank-pos{min-width:38px;text-align:center;font-weight:700}
-    .rank-name{font-weight:700;font-size:14px;color:#fff;letter-spacing:-0.2px}
+    .rank-name{font-weight:700;font-size:14px;color:#fff;letter-spacing:-0.2px;cursor:pointer;display:flex;align-items:center;gap:6px}
+    .rank-name:active{opacity:0.7}
+    .rank-name .arrow{font-size:11px;opacity:0.4;transition:opacity .2s}
+    .rank-name:hover .arrow{opacity:1}
     .rank-detail{font-size:11px;color:rgba(255,255,255,0.45);margin-top:3px;font-weight:400}
     .rank-pts{text-align:right}
     .rank-pts-val{font-weight:900;font-size:22px;color:#f0c040;letter-spacing:-0.5px}
@@ -232,6 +235,13 @@ function buildRanking(){
 function pct(a,b){return (a+b)?Math.round(a/(a+b)*100):0;}
 let tab='ranking',search='',selPlayer='';
 
+function goToStats(name){
+  selPlayer=name;
+  tab='stats';
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 function animateCount(el,target,duration){
   const start=performance.now();
   function update(now){
@@ -320,7 +330,7 @@ function renderRanking(){
         <div class="rank-card ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
           <div class="rank-pos">${i===0?'<div class="ball-rank ball-rank-1"><span>1</span></div>':i===1?'<div class="ball-rank ball-rank-2"><span>2</span></div>':i===2?'<div class="ball-rank ball-rank-3"><span>3</span></div>':'<span style="font-size:15px;color:rgba(255,255,255,0.3)">#'+(i+1)+'</span>'}</div>
           <div style="flex:1">
-            <div class="rank-name">${p.name}</div>
+            <div class="rank-name" onclick="goToStats('${p.name}')">${p.name} <span class="arrow">›</span></div>
             <div class="rank-detail">${p.played} PJ · ${p.won}G / ${p.lost}P · ${p.played?Math.round(p.won/p.played*100):0}%</div>
           </div>
           <div class="rank-pts">
