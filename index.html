@@ -231,6 +231,14 @@ const MATCHES = [
   {id:116,w:"Jesús Donoso",l:"Carlos Villablanca",date:"2026-06-27",score:"6-4 6-3",wS:2,lS:0},
   {id:117,w:"Juan Díaz Navarrete",l:"Carlos Neira",date:"2026-06-27",score:"6-7 7-6 10-6",wS:2,lS:1},
   {id:118,w:"Ariel Palma",l:"Eduardo Hidalgo",date:"2026-06-27",score:"6-2 6-0",wS:2,lS:0},
+  {id:119,w:"Álvaro Barros",l:"Fernando Meneses",date:"2026-06-27",score:"6-1 6-0",wS:2,lS:0},
+  {id:120,w:"Victor Carriel",l:"Rodrigo Silva",date:"2026-07-04",score:"6-0 6-1",wS:2,lS:0},
+  {id:121,w:"Eduardo Hidalgo",l:"Jorge Arroniz",date:"2026-07-04",score:"6-3 7-5",wS:2,lS:0},
+  {id:122,w:"Ariel Palma",l:"Jesús Donoso",date:"2026-07-04",score:"6-2 6-2",wS:2,lS:0},
+  {id:123,w:"Carlos Neira",l:"Fernando Meneses",date:"2026-07-05",score:"6-1 6-3",wS:2,lS:0},
+  {id:124,w:"Iván Torres",l:"Álvaro Barros",date:"2026-07-05",score:"6-2 3-6 10-7",wS:2,lS:1},
+  {id:125,w:"Jorge Castro",l:"Carlos Villablanca",date:"2026-07-05",score:"6-2 6-3",wS:2,lS:0},
+  {id:126,w:"Jonathan Villalobos",l:"Rodrigo Tapia",date:"2026-07-05",score:"7-5 4-6 10-4",wS:2,lS:1},
 ];
 
 function buildRanking(){
@@ -243,6 +251,10 @@ function buildRanking(){
     if(pB!==pA) return pB-pA;
     return b.won-a.won;
   });
+}
+
+function getAllPlayers(){
+  return [...new Set(MATCHES.flatMap(m=>[m.w,m.l]))].sort();
 }
 
 function pct(a,b){return (a+b)?Math.round(a/(a+b)*100):0;}
@@ -474,7 +486,7 @@ function renderRanking(){
 }
 
 function renderStats(){
-  const players=[...new Set(MATCHES.flatMap(m=>[m.w,m.l]))].sort();
+  const players=getAllPlayers();
   let body='';
   if(selPlayer){
     const pm=MATCHES.filter(m=>m.w===selPlayer||m.l===selPlayer);
@@ -565,6 +577,7 @@ function renderHistory(){
 function render(){
   const ranking=buildRanking();
   const navItems=[['dashboard','📊','Dashboard'],['ranking','🏆','Ranking'],['stats','👤','Stats'],['history','📋','Historial']];
+  const allPlayers=getAllPlayers();
   document.getElementById('app').innerHTML=`
     <div class="app">
       <div class="header">
@@ -574,7 +587,7 @@ function render(){
         <div class="header-top">
           <div class="header-info">
             <div class="liga">Liga 2026</div>
-            <div class="count">${MATCHES.length} partidos · ${ranking.length} jugadores</div>
+            <div class="count">${MATCHES.length} partidos · ${allPlayers.length} jugadores</div>
           </div>
           ${logo(72)}
         </div>
