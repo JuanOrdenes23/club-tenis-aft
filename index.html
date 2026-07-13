@@ -13,11 +13,6 @@
     .header-top{padding:16px 16px 14px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
     .header-info .liga{font-size:11px;letter-spacing:3px;opacity:.7;text-transform:uppercase;font-weight:500}
     .header-info .count{font-size:11px;opacity:.5;margin-top:3px}
-    .tabs{display:flex;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.08)}
-    .tab-btn{flex:1;padding:10px 2px;border:none;cursor:pointer;font-size:9px;font-weight:500;background:transparent;color:rgba(255,255,255,0.5);border-bottom:2px solid transparent;transition:all .25s ease;text-align:center;font-family:'Inter',sans-serif;letter-spacing:0.3px}
-    .tab-btn.active{color:#fff;font-weight:700;border-bottom:2px solid #f0c040;background:rgba(255,255,255,0.07)}
-    .tab-btn:active{transform:scale(0.95)}
-    .tab-icon{font-size:16px;margin-bottom:2px}
     .content{padding:16px 14px 100px;position:relative;min-height:calc(100vh - 160px)}
     .content-inner{position:relative;z-index:1}
     .page{animation:fadeSlideIn .3s ease forwards}
@@ -25,7 +20,6 @@
     .court-bg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.03;pointer-events:none;z-index:0;max-width:480px;width:100%}
     .section-title{font-weight:800;font-size:18px;color:#fff;margin-bottom:2px;letter-spacing:-0.3px}
     .section-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500}
-    .glass-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px;box-shadow:0 4px 24px rgba(0,0,0,0.2);margin-bottom:12px}
     .ranking-list{display:flex;flex-direction:column;gap:10px}
     .rank-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 20px rgba(0,0,0,0.2);transition:transform .2s}
     .rank-card:active{transform:scale(0.97)}
@@ -35,8 +29,7 @@
     .rank-pos{min-width:38px;text-align:center;font-weight:700}
     .rank-name{font-weight:700;font-size:14px;color:#fff;letter-spacing:-0.2px;cursor:pointer;display:flex;align-items:center;gap:6px}
     .rank-name:active{opacity:0.7}
-    .rank-name .arrow{font-size:11px;opacity:0.4;transition:opacity .2s}
-    .rank-name:hover .arrow{opacity:1}
+    .rank-name .arrow{font-size:11px;opacity:0.4}
     .rank-detail{font-size:11px;color:rgba(255,255,255,0.45);margin-top:3px}
     .rank-pts{text-align:right}
     .rank-pts-val{font-weight:900;font-size:22px;color:#f0c040;letter-spacing:-0.5px}
@@ -59,10 +52,10 @@
     .player-history-item{padding-left:12px;margin-bottom:12px}
     .player-history-name{font-size:13px;font-weight:600;color:#fff}
     .player-history-date{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
-    select,input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);font-size:14px;outline:none;background:rgba(255,255,255,0.07);color:#fff;margin-bottom:16px;font-family:'Inter',sans-serif;backdrop-filter:blur(8px)}
+    select,input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);font-size:14px;outline:none;background:rgba(255,255,255,0.07);color:#fff;margin-bottom:16px;font-family:'Inter',sans-serif}
     select option{background:#0d1117;color:#fff}
     .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(10,15,30,0.9);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.08);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
-    .nav-btn{flex:1;padding:12px 4px 10px;border:none;cursor:pointer;font-size:9px;font-weight:500;background:transparent;color:rgba(255,255,255,0.4);text-align:center;font-family:'Inter',sans-serif;letter-spacing:0.3px;transition:all .2s ease}
+    .nav-btn{flex:1;padding:12px 4px 10px;border:none;cursor:pointer;font-size:9px;font-weight:500;background:transparent;color:rgba(255,255,255,0.4);text-align:center;font-family:'Inter',sans-serif;transition:all .2s ease}
     .nav-btn.active{color:#f0c040;font-weight:700}
     .nav-btn:active{transform:scale(0.9)}
     .nav-icon{font-size:18px;margin-bottom:2px}
@@ -81,10 +74,8 @@
     .ball-rank-2{animation:spin 2.5s ease-in-out infinite;animation-delay:0.8s}
     .ball-rank-3{animation:spin 2.5s ease-in-out infinite;animation-delay:1.6s}
     .racket-svg{position:absolute;pointer-events:none}
-    /* DASHBOARD */
-    .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+    .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
     .dash-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
-    .dash-card.full{grid-column:1/-1}
     .dash-val{font-weight:900;font-size:28px;letter-spacing:-1px;margin:6px 0 2px}
     .dash-lbl{font-size:10px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1.5px;font-weight:500}
     .dash-icon{font-size:26px}
@@ -99,14 +90,13 @@
     .recent-match{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
     .recent-match:last-child{border-bottom:none}
     .recent-names{font-size:12px;color:#fff;font-weight:600}
-    .recent-score{font-size:11px;color:#f0c040;font-weight:700}
     .recent-date{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px}
     .mini-bar-wrap{height:6px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.08);margin-top:6px}
     .mini-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#3a7bd5,#52d48a)}
     .month-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
     .month-row:last-child{border-bottom:none}
     .month-name{font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;min-width:60px}
-    .month-count{font-size:12px;color:#f0c040;font-weight:700;min-width:30px;text-align:right}
+    .month-count{font-size:12px;color:#f0c040;font-weight:700;min-width:40px;text-align:right}
   </style>
 </head>
 <body>
@@ -245,6 +235,7 @@ const MATCHES = [
   {id:130,w:"Juan Órdenes",l:"Isidro de la Contanza",date:"2026-07-11",score:"6-2 7-5",wS:2,lS:0},
   {id:131,w:"Luis Valdez",l:"Fernando Meneses",date:"2026-07-12",score:"6-2 7-6",wS:2,lS:0},
   {id:132,w:"Juan Díaz Navarrete",l:"Iván Torres",date:"2026-07-12",score:"6-4 7-6",wS:2,lS:0},
+  {id:133,w:"Jonathan Villalobos",l:"Carlos Villablanca",date:"2026-07-12",score:"6-2 6-1",wS:2,lS:0},
 ];
 
 function buildRanking(){
@@ -357,111 +348,79 @@ function statBar(p,lL,lR,cL,cR){
 
 function renderDashboard(){
   const ranking=buildRanking();
+  const allPlayers=getAllPlayers();
   const top3=ranking.slice(0,3);
   const recent=[...MATCHES].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-  const totalPlayers=[...new Set(MATCHES.flatMap(m=>[m.w,m.l]))].length;
-
-  // Partidos por mes
-  const months={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio'};
+  const monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio'};
   const byMonth={};
   MATCHES.forEach(m=>{const mo=m.date.slice(5,7);byMonth[mo]=(byMonth[mo]||0)+1;});
-
-  // Jugador más activo
+  const maxMonth=Math.max(...Object.values(byMonth));
   const activity={};
   MATCHES.forEach(m=>{activity[m.w]=(activity[m.w]||0)+1;activity[m.l]=(activity[m.l]||0)+1;});
   const mostActive=Object.entries(activity).sort((a,b)=>b[1]-a[1])[0];
-
-  // Mejor racha actual
   const streaks=ranking.map(p=>{const s=getStreak(p.name);return {...s,name:p.name};}).filter(s=>s.type==='w'&&s.count>=2).sort((a,b)=>b.count-a.count);
   const bestStreak=streaks[0];
+  const topWinner=ranking[0];
+  const bestPct=ranking.filter(p=>p.played>=3).sort((a,b)=>(b.won/b.played)-(a.won/a.played))[0];
 
   return `<div class="page">
     <div class="section-title">Dashboard</div>
-    <div class="section-sub">Liga 2026 · Análisis general</div>
-
-    <!-- KPIs -->
+    <div class="section-sub">Liga 2026 · Análisis completo</div>
     <div class="dash-grid">
-      <div class="dash-card">
-        <div class="dash-icon">🎾</div>
-        <div class="dash-val" style="color:#f0c040">${MATCHES.length}</div>
-        <div class="dash-lbl">Partidos</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-icon">👥</div>
-        <div class="dash-val" style="color:#52d48a">${totalPlayers}</div>
-        <div class="dash-lbl">Jugadores</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-icon">🔥</div>
-        <div class="dash-val" style="color:#ff6b6b">${bestStreak?bestStreak.count:'-'}</div>
-        <div class="dash-lbl">Mejor racha</div>
-        ${bestStreak?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px">${bestStreak.name.split(' ')[0]}</div>`:''}
-      </div>
-      <div class="dash-card">
-        <div class="dash-icon">⚡</div>
-        <div class="dash-val" style="color:#a78bfa">${mostActive?mostActive[1]:'-'}</div>
-        <div class="dash-lbl">Más activo</div>
-        ${mostActive?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px">${mostActive[0].split(' ')[0]}</div>`:''}
-      </div>
+      <div class="dash-card"><div class="dash-icon">🎾</div><div class="dash-val" style="color:#f0c040">${MATCHES.length}</div><div class="dash-lbl">Partidos</div></div>
+      <div class="dash-card"><div class="dash-icon">👥</div><div class="dash-val" style="color:#52d48a">${allPlayers.length}</div><div class="dash-lbl">Jugadores</div></div>
+      <div class="dash-card"><div class="dash-icon">🔥</div><div class="dash-val" style="color:#ff6b6b">${bestStreak?bestStreak.count:'-'}</div><div class="dash-lbl">Mejor racha</div>${bestStreak?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${bestStreak.name.split(' ')[0]}</div>`:''}</div>
+      <div class="dash-card"><div class="dash-icon">⚡</div><div class="dash-val" style="color:#a78bfa">${mostActive?mostActive[1]:'-'}</div><div class="dash-lbl">Más activo</div>${mostActive?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${mostActive[0].split(' ')[0]}</div>`:''}</div>
     </div>
-
-    <!-- Top 3 -->
+    <div class="dash-grid">
+      <div class="dash-card"><div class="dash-icon">🏆</div><div class="dash-val" style="color:#f0c040;font-size:22px">${topWinner?topWinner.won:'-'}</div><div class="dash-lbl">Más victorias</div>${topWinner?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${topWinner.name.split(' ')[0]}</div>`:''}</div>
+      <div class="dash-card"><div class="dash-icon">🎯</div><div class="dash-val" style="color:#52d48a;font-size:22px">${bestPct?Math.round(bestPct.won/bestPct.played*100)+'%':'-'}</div><div class="dash-lbl">Mejor %</div>${bestPct?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${bestPct.name.split(' ')[0]}</div>`:''}</div>
+      <div class="dash-card"><div class="dash-icon">📅</div><div class="dash-val" style="color:#60a5fa;font-size:22px">${Object.keys(byMonth).length}</div><div class="dash-lbl">Meses activos</div></div>
+      <div class="dash-card"><div class="dash-icon">📊</div><div class="dash-val" style="color:#f472b6;font-size:22px">${Math.round(MATCHES.length/allPlayers.length*10)/10}</div><div class="dash-lbl">PJ por jugador</div></div>
+    </div>
     <div class="card">
       <div class="card-title">🏆 Top 3 del ranking</div>
-      ${top3.map((p,i)=>{
-        const s=getStreak(p.name);
-        return `<div class="top-player">
-          <div class="top-player-rank">${i===0?'🥇':i===1?'🥈':'🥉'}</div>
-          <div style="flex:1">
-            <div class="top-player-name" style="cursor:pointer" onclick="goToStats('${p.name}')">${p.name} <span style="font-size:10px;opacity:0.4">›</span></div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">${p.played} PJ · ${Math.round(p.won/p.played*100)}% victorias</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-            <div class="top-player-pts">${p.pts} pts</div>
-            ${s.count>=2?`<span class="streak-badge ${s.type==='w'?'streak-w':'streak-l'}">${s.type==='w'?'🔥':'❄️'} ${s.count}</span>`:''}
-          </div>
-        </div>`;
-      }).join('')}
+      ${top3.map((p,i)=>{const s=getStreak(p.name);return `<div class="top-player">
+        <div class="top-player-rank">${i===0?'🥇':i===1?'🥈':'🥉'}</div>
+        <div style="flex:1"><div class="top-player-name" style="cursor:pointer" onclick="goToStats('${p.name}')">${p.name} <span style="font-size:10px;opacity:0.4">›</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">${p.played} PJ · ${Math.round(p.won/p.played*100)}% victorias</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <div class="top-player-pts">${p.pts} pts</div>
+          ${s.count>=2?`<span class="streak-badge ${s.type==='w'?'streak-w':'streak-l'}">${s.type==='w'?'🔥':'❄️'} ${s.count}</span>`:''}
+        </div></div>`;}).join('')}
     </div>
-
-    <!-- Partidos recientes -->
+    <div class="card">
+      <div class="card-title">📅 Actividad por mes</div>
+      ${Object.entries(byMonth).sort().map(([mo,cnt])=>`
+        <div class="month-row">
+          <div class="month-name">${monthNames[mo]||mo}</div>
+          <div style="flex:1;margin:0 12px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${Math.round(cnt/maxMonth*100)}%"></div></div></div>
+          <div class="month-count">${cnt} 🎾</div>
+        </div>`).join('')}
+    </div>
     <div class="card">
       <div class="card-title">⏱ Últimos partidos</div>
-      ${recent.map(m=>`
-        <div class="recent-match">
-          <div>
-            <div class="recent-names">✅ ${m.w} <span style="color:rgba(255,255,255,0.3)">vs</span> ${m.l}</div>
-            <div class="recent-date">📅 ${m.date}</div>
-          </div>
-          <div class="recent-score">${m.score}</div>
-        </div>`).join('')}
+      ${recent.map(m=>`<div class="recent-match">
+        <div><div class="recent-names">✅ ${m.w} <span style="color:rgba(255,255,255,0.3)">vs</span> ${m.l}</div>
+        <div class="recent-date">📅 ${m.date} · ${m.score}</div></div>
+      </div>`).join('')}
     </div>
-
-    <!-- Partidos por mes -->
-    <div class="card">
-      <div class="card-title">📅 Partidos por mes</div>
-      ${Object.entries(byMonth).sort().map(([mo,cnt])=>{
-        const maxVal=Math.max(...Object.values(byMonth));
-        const barPct=Math.round(cnt/maxVal*100);
-        return `<div class="month-row">
-          <div class="month-name">${months[mo]||mo}</div>
-          <div style="flex:1;margin:0 12px">
-            <div class="mini-bar-wrap"><div class="mini-bar" style="width:${barPct}%"></div></div>
-          </div>
-          <div class="month-count">${cnt}</div>
-        </div>`;
-      }).join('')}
-    </div>
-
-    <!-- Rachas activas -->
     ${streaks.length>0?`<div class="card">
-      <div class="card-title">🔥 Rachas de victorias activas</div>
-      ${streaks.slice(0,5).map(s=>`
-        <div class="top-player">
-          <span class="streak-badge streak-w">🔥 ${s.count} seguidas</span>
-          <div class="top-player-name" style="cursor:pointer;margin-left:10px" onclick="goToStats('${s.name}')">${s.name} <span style="font-size:10px;opacity:0.4">›</span></div>
-        </div>`).join('')}
+      <div class="card-title">🔥 Rachas ganadoras activas</div>
+      ${streaks.slice(0,6).map(s=>`<div class="top-player">
+        <span class="streak-badge streak-w" style="min-width:80px;justify-content:center">🔥 ${s.count} seguidas</span>
+        <div class="top-player-name" style="cursor:pointer;margin-left:10px" onclick="goToStats('${s.name}')">${s.name} <span style="font-size:10px;opacity:0.4">›</span></div>
+      </div>`).join('')}
     </div>`:''}
+    <div class="card">
+      <div class="card-title">📈 Top 5 rendimiento (mín. 3 PJ)</div>
+      ${ranking.filter(p=>p.played>=3).slice(0,5).map((p,i)=>{const pv=Math.round(p.won/p.played*100);return `
+        <div class="month-row">
+          <div style="font-size:12px;color:#fff;font-weight:600;min-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i+1}. ${p.name.split(' ')[0]}</div>
+          <div style="flex:1;margin:0 10px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${pv}%;background:linear-gradient(90deg,#f0c040,#f97316)"></div></div></div>
+          <div style="font-size:12px;color:#f0c040;font-weight:700;min-width:36px;text-align:right">${pv}%</div>
+        </div>`;}).join('')}
+    </div>
   </div>`;
 }
 
@@ -471,22 +430,17 @@ function renderRanking(){
     <div class="section-title">Escalerilla</div>
     <div class="section-sub">Liga 2026 · ${ranking.length} jugadores</div>
     <div class="ranking-list">
-      ${ranking.map((p,i)=>{
-        const s=getStreak(p.name);
-        return `<div class="rank-card ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
+      ${ranking.map((p,i)=>{const s=getStreak(p.name);return `
+        <div class="rank-card ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
           <div class="rank-pos">${i===0?'<div class="ball-rank ball-rank-1"><span>1</span></div>':i===1?'<div class="ball-rank ball-rank-2"><span>2</span></div>':i===2?'<div class="ball-rank ball-rank-3"><span>3</span></div>':'<span style="font-size:15px;color:rgba(255,255,255,0.3)">#'+(i+1)+'</span>'}</div>
           <div style="flex:1">
             <div class="rank-name" onclick="goToStats('${p.name}')">${p.name} <span class="arrow">›</span></div>
             <div class="rank-detail">${p.played} PJ · ${p.won}G / ${p.lost}P · ${p.played?Math.round(p.won/p.played*100):0}%
-              ${s.count>=2?`<span class="streak-badge ${s.type==='w'?'streak-w':'streak-l'}" style="margin-left:6px">${s.type==='w'?'🔥':'❄️'}${s.count}</span>`:''}
+              ${s.count>=2?`<span class="streak-badge ${s.type==='w'?'streak-w':'streak-l'}" style="margin-left:6px;padding:2px 6px">${s.type==='w'?'🔥':'❄️'}${s.count}</span>`:''}
             </div>
           </div>
-          <div class="rank-pts">
-            <div class="rank-pts-val" id="pts-${i}">0</div>
-            <div class="rank-pts-lbl">pts</div>
-          </div>
-        </div>`;
-      }).join('')}
+          <div class="rank-pts"><div class="rank-pts-val" id="pts-${i}">0</div><div class="rank-pts-lbl">pts</div></div>
+        </div>`;}).join('')}
     </div>
   </div>`;
 }
@@ -507,49 +461,34 @@ function renderStats(){
     const rivals={};
     pm.forEach(m=>{const r=m.w===selPlayer?m.l:m.w;rivals[r]=(rivals[r]||0)+1;});
     const topRival=Object.entries(rivals).sort((a,b)=>b[1]-a[1])[0];
-    const hardestRival=Object.entries(rivals).filter(([r])=>pm.some(m=>m.l===selPlayer&&m.w===r)).sort((a,b)=>{
+    const hardest=Object.entries(rivals).filter(([r])=>pm.some(m=>m.l===selPlayer&&m.w===r)).sort((a,b)=>{
       const aL=pm.filter(m=>m.l===selPlayer&&m.w===a[0]).length;
       const bL=pm.filter(m=>m.l===selPlayer&&m.w===b[0]).length;
       return bL-aL;
     })[0];
-
     body=`
       ${s.count>=2?`<div class="card" style="border:1px solid ${s.type==='w'?'rgba(82,212,138,0.3)':'rgba(224,82,82,0.3)'}">
         <div style="display:flex;align-items:center;gap:10px">
           <span style="font-size:28px">${s.type==='w'?'🔥':'❄️'}</span>
-          <div>
-            <div style="font-weight:700;color:#fff">${s.type==='w'?'Racha ganadora':'Racha perdedora'}</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.5)">${s.count} partidos consecutivos ${s.type==='w'?'ganados':'perdidos'}</div>
-          </div>
-        </div>
-      </div>`:''}
+          <div><div style="font-weight:700;color:#fff">${s.type==='w'?'Racha ganadora':'Racha perdedora'}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.5)">${s.count} partidos consecutivos ${s.type==='w'?'ganados':'perdidos'}</div></div>
+        </div></div>`:''}
       <div class="stat-grid">
         ${[['🎾','#f0c040',pm.length,'Partidos'],['⭐','#f0c040',pw*10,'Puntos'],['✅','#52d48a',pw,'Ganados'],['❌','#e05252',pl,'Perdidos']].map(([ic,c,v,l])=>`
           <div class="stat-card"><div class="stat-icon">${ic}</div><div class="stat-val" style="color:${c}">${v}</div><div class="stat-lbl">${l}</div></div>`).join('')}
       </div>
-      <div class="card">
-        <div class="card-title">% Victorias vs Derrotas</div>
-        ${statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')}
-      </div>
-      <div class="card">
-        <div class="card-title">% Sets Ganados vs Perdidos</div>
-        ${statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')}
-      </div>
-      ${topRival||hardestRival?`<div class="card">
-        <div class="card-title">🎯 Análisis de rivales</div>
-        ${topRival?`<div class="top-player"><span style="font-size:18px">🤝</span><div style="flex:1;margin-left:10px"><div style="font-size:12px;color:rgba(255,255,255,0.5)">Rival más frecuente</div><div style="font-weight:700;color:#fff">${topRival[0]}</div></div><div style="font-size:12px;color:#f0c040">${topRival[1]} PJ</div></div>`:''}
-        ${hardestRival?`<div class="top-player"><span style="font-size:18px">⚔️</span><div style="flex:1;margin-left:10px"><div style="font-size:12px;color:rgba(255,255,255,0.5)">Rival más difícil</div><div style="font-weight:700;color:#fff">${hardestRival[0]}</div></div></div>`:''}
+      <div class="card"><div class="card-title">% Victorias vs Derrotas</div>${statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')}</div>
+      <div class="card"><div class="card-title">% Sets Ganados vs Perdidos</div>${statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')}</div>
+      ${topRival||hardest?`<div class="card"><div class="card-title">🎯 Análisis de rivales</div>
+        ${topRival?`<div class="top-player"><span style="font-size:18px">🤝</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más frecuente</div><div style="font-weight:700;color:#fff">${topRival[0]}</div></div><div style="font-size:12px;color:#f0c040">${topRival[1]} PJ</div></div>`:''}
+        ${hardest?`<div class="top-player"><span style="font-size:18px">⚔️</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más difícil</div><div style="font-weight:700;color:#fff">${hardest[0]}</div></div></div>`:''}
       </div>`:''}
-      <div class="card">
-        <div class="card-title">Historial de partidos</div>
-        ${sorted.map(m=>{
-          const won=m.w===selPlayer;
-          const rival=won?m.l:m.w;
-          return `<div class="player-history-item" style="border-left:3px solid ${won?'#52d48a':'#e05252'}">
+      <div class="card"><div class="card-title">Historial de partidos</div>
+        ${sorted.map(m=>{const won=m.w===selPlayer;const rival=won?m.l:m.w;return `
+          <div class="player-history-item" style="border-left:3px solid ${won?'#52d48a':'#e05252'}">
             <div class="player-history-name">vs ${rival} <span style="font-weight:400;color:rgba(255,255,255,0.4)">— ${m.score}</span></div>
             <div class="player-history-date">${m.date} · ${won?'✅ Victoria (+10 pts)':'❌ Derrota (0 pts)'}</div>
-          </div>`;
-        }).join('')}
+          </div>`;}).join('')}
       </div>`;
   }
   return `<div class="page">
@@ -582,8 +521,8 @@ function renderHistory(){
 
 function render(){
   const ranking=buildRanking();
-  const navItems=[['dashboard','📊','Dashboard'],['ranking','🏆','Ranking'],['stats','👤','Stats'],['history','📋','Historial']];
   const allPlayers=getAllPlayers();
+  const navItems=[['dashboard','📊','Dashboard'],['ranking','🏆','Ranking'],['stats','👤','Stats'],['history','📋','Historial']];
   document.getElementById('app').innerHTML=`
     <div class="app">
       <div class="header">
