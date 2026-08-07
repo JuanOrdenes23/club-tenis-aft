@@ -269,27 +269,7 @@ function getStreak(name){
   return {type:first,count};
 }
 
-function getAchievements(name, ranking){
-  const pm=MATCHES.filter(m=>m.w===name||m.l===name);
-  const pw=pm.filter(m=>m.w===name).length;
-  const pct=pm.length?pw/pm.length:0;
-  const streak=getStreak(name);
-  const pos=ranking.findIndex(p=>p.name===name);
-  const sorted=[...pm].sort((a,b)=>a.date.localeCompare(b.date));
-  const firstWon=sorted.length>0&&sorted[0].w===name;
-  const achievements=[];
-  if(pm.length>=1) achievements.push({icon:'🎾',name:'Debut',desc:'Jugó su primer partido'});
-  if(firstWon) achievements.push({icon:'⚡',name:'Debut Ganador',desc:'Ganó su primer partido'});
-  if(pm.length>=10) achievements.push({icon:'⭐',name:'10 Partidos',desc:'Jugó 10 o más partidos'});
-  if(pm.length>=20) achievements.push({icon:'🌟',name:'Veterano',desc:'20 o más partidos jugados'});
-  if(streak.type==='w'&&streak.count>=3) achievements.push({icon:'🔥',name:'Racha de Fuego',desc:'3 victorias consecutivas'});
-  if(streak.type==='w'&&streak.count>=5) achievements.push({icon:'💪',name:'Invicto',desc:'5 victorias seguidas'});
-  if(streak.type==='w'&&streak.count>=10) achievements.push({icon:'👑',name:'Dominador',desc:'10 victorias seguidas'});
-  if(pos===0) achievements.push({icon:'🏆',name:'Líder',desc:'Ocupa el #1 del ranking'});
-  if(pm.length>=5&&pct>=0.7) achievements.push({icon:'🎯',name:'Certero',desc:'70%+ de victorias (mín. 5 PJ)'});
-  if(pm.length>=5&&pct>=0.8) achievements.push({icon:'💎',name:'Elite',desc:'80%+ de victorias (mín. 5 PJ)'});
-  return achievements;
-}
+let tab='ranking',search='',selPlayer='';
 
 function animateCount(el,target,duration){
   const start=performance.now();
@@ -442,21 +422,6 @@ function renderDashboard(){
           <div style="font-size:12px;color:#f0c040;font-weight:700;min-width:36px;text-align:right">${pv}%</div>
         </div>`;}).join('')}
     </div>
-    <div class="card">
-      <div class="card-title">🏅 Logros destacados</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        ${ranking.map(p=>{
-          const achv=getAchievements(p.name,ranking);
-          const top=achv.filter(a=>['💎','👑','💪','🏆','🌟'].includes(a.icon));
-          return top.map(a=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-            <span style="font-size:20px">${a.icon}</span>
-            <div style="flex:1"><div style="font-size:12px;font-weight:700;color:#fff">${a.name}</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.4)">${a.desc}</div></div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.5);cursor:pointer" onclick="goToStats('${p.name}')">${p.name.split(' ')[0]} ›</div>
-          </div>`).join('');
-        }).filter(Boolean).join('')||'<div style="font-size:12px;color:rgba(255,255,255,0.3)">Los logros aparecerán a medida que avance la liga</div>'}
-      </div>
-    </div>
   </div>`;
 }
 
@@ -519,14 +484,7 @@ function renderStats(){
         ${topRival?`<div class="top-player"><span style="font-size:18px">🤝</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más frecuente</div><div style="font-weight:700;color:#fff">${topRival[0]}</div></div><div style="font-size:12px;color:#f0c040">${topRival[1]} PJ</div></div>`:''}
         ${hardest?`<div class="top-player"><span style="font-size:18px">⚔️</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más difícil</div><div style="font-weight:700;color:#fff">${hardest[0]}</div></div></div>`:''}
       </div>`:''}
-      ${(()=>{const achv=getAchievements(selPlayer,buildRanking());return achv.length>0?`<div class="card"><div class="card-title">🏅 Logros obtenidos</div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
-          ${achv.map(a=>`<div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;min-width:140px">
-            <span style="font-size:22px">${a.icon}</span>
-            <div><div style="font-size:12px;font-weight:700;color:#fff">${a.name}</div>
-            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:1px">${a.desc}</div></div>
-          </div>`).join('')}
-        </div></div>`:'';})()}      <div class="card"><div class="card-title">Historial de partidos</div>
+      <div class="card"><div class="card-title">Historial de partidos</div>
         ${sorted.map(m=>{const won=m.w===selPlayer;const rival=won?m.l:m.w;return `
           <div class="player-history-item" style="border-left:3px solid ${won?'#52d48a':'#e05252'}">
             <div class="player-history-name">vs ${rival} <span style="font-weight:400;color:rgba(255,255,255,0.4)">— ${m.score}</span></div>
@@ -580,7 +538,6 @@ function render(){
           ${logo(72)}
         </div>
       </div>
-
       <div class="content">
         ${courtSVG()}
         <div class="content-inner">
