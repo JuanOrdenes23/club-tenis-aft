@@ -368,11 +368,7 @@ function renderDashboard(){
   });
   html+='</div>';
 
-  html+='<div class="card"><div class="card-title">⏱ Últimos partidos</div>';
-  recent.forEach(function(m){
-    html+='<div class="recent-match"><div><div class="recent-names">✅ '+m.w+' <span style="color:rgba(255,255,255,0.3)">vs</span> '+m.l+'</div><div class="recent-date">📅 '+m.date+' · '+m.score+'</div></div></div>';
-  });
-  html+='</div>';
+
 
   if(streaks.length>0){
     html+='<div class="card"><div class="card-title">🔥 Rachas ganadoras activas</div>';
