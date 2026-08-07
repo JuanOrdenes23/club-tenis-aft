@@ -433,12 +433,7 @@ function renderStats(){
     body+='<div class="card"><div class="card-title">% Victorias vs Derrotas</div>'+statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')+'</div>';
     body+='<div class="card"><div class="card-title">% Sets Ganados vs Perdidos</div>'+statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')+'</div>';
 
-    if(topRival||hardest){
-      body+='<div class="card"><div class="card-title">🎯 Análisis de rivales</div>';
-      if(topRival) body+='<div class="top-player"><span style="font-size:18px">🤝</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más frecuente</div><div style="font-weight:700;color:#fff">'+topRival[0]+'</div></div><div style="font-size:12px;color:#f0c040">'+topRival[1]+' PJ</div></div>';
-      if(hardest) body+='<div class="top-player"><span style="font-size:18px">⚔️</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más difícil</div><div style="font-weight:700;color:#fff">'+hardest[0]+'</div></div></div>';
-      body+='</div>';
-    }
+
 
     if(achv.length>0){
       body+='<div class="card"><div class="card-title">🏅 Logros obtenidos ('+achv.length+')</div>';
