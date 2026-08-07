@@ -13,7 +13,7 @@
     .header-top{padding:16px 16px 14px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
     .header-info .liga{font-size:11px;letter-spacing:3px;opacity:.7;text-transform:uppercase;font-weight:500}
     .header-info .count{font-size:11px;opacity:.5;margin-top:3px}
-    .content{padding:16px 14px 100px;position:relative;min-height:calc(100vh - 160px)}
+    .content{padding:16px 14px 100px;position:relative;min-height:calc(100vh - 130px)}
     .content-inner{position:relative;z-index:1}
     .page{animation:fadeSlideIn .3s ease forwards}
     @keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -76,33 +76,36 @@
     .racket-svg{position:absolute;pointer-events:none}
     .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
     .dash-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
-    .dash-val{font-weight:900;font-size:28px;letter-spacing:-1px;margin:6px 0 2px}
+    .dash-val{font-weight:900;font-size:26px;letter-spacing:-1px;margin:6px 0 2px}
     .dash-lbl{font-size:10px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1.5px;font-weight:500}
-    .dash-icon{font-size:26px}
+    .dash-icon{font-size:24px}
     .top-player{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
     .top-player:last-child{border-bottom:none}
-    .top-player-rank{font-size:18px;min-width:28px}
     .top-player-name{font-weight:600;font-size:13px;color:#fff;flex:1}
     .top-player-pts{font-weight:800;font-size:16px;color:#f0c040}
-    .streak-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+    .streak-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
     .streak-w{background:rgba(82,212,138,0.15);color:#52d48a;border:1px solid rgba(82,212,138,0.3)}
     .streak-l{background:rgba(224,82,82,0.15);color:#e05252;border:1px solid rgba(224,82,82,0.3)}
-    .recent-match{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
-    .recent-match:last-child{border-bottom:none}
-    .recent-names{font-size:12px;color:#fff;font-weight:600}
-    .recent-date{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px}
-    .mini-bar-wrap{height:6px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.08);margin-top:6px}
-    .mini-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#3a7bd5,#52d48a)}
     .month-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
     .month-row:last-child{border-bottom:none}
     .month-name{font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;min-width:60px}
     .month-count{font-size:12px;color:#f0c040;font-weight:700;min-width:40px;text-align:right}
+    .mini-bar-wrap{height:6px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.08);margin-top:6px}
+    .mini-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#3a7bd5,#52d48a)}
+    .recent-match{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .recent-match:last-child{border-bottom:none}
+    .recent-names{font-size:12px;color:#fff;font-weight:600}
+    .recent-date{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px}
+    .achievement-badge{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .ach-icon{font-size:22px;flex-shrink:0}
+    .ach-name{font-size:12px;font-weight:700;color:#fff}
+    .ach-desc{font-size:10px;color:rgba(255,255,255,0.4);margin-top:1px}
   </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-const MATCHES = [
+const MATCHES=[
   {id:1,w:"Álvaro Barros",l:"Carlos Villablanca",date:"2026-03-07",score:"6-2 4-6 6-2",wS:2,lS:1},
   {id:2,w:"Arturo Rodriguez",l:"Rodrigo Silva",date:"2026-03-07",score:"6-1 6-1",wS:2,lS:0},
   {id:3,w:"Juan Díaz Navarrete",l:"Juan Órdenes",date:"2026-03-07",score:"6-0 6-3",wS:2,lS:0},
@@ -251,9 +254,7 @@ function buildRanking(){
   });
 }
 
-function getAllPlayers(){
-  return [...new Set(MATCHES.flatMap(m=>[m.w,m.l]))].sort();
-}
+function getAllPlayers(){return [...new Set(MATCHES.flatMap(m=>[m.w,m.l]))].sort();}
 
 function pct(a,b){return (a+b)?Math.round(a/(a+b)*100):0;}
 
@@ -263,10 +264,31 @@ function getStreak(name){
   const first=pm[0].w===name?'w':'l';
   let count=1;
   for(let i=1;i<pm.length;i++){
-    const res=pm[i].w===name?'w':'l';
-    if(res===first) count++; else break;
+    if((pm[i].w===name?'w':'l')===first) count++; else break;
   }
   return {type:first,count};
+}
+
+function getAchievements(name,ranking){
+  const pm=MATCHES.filter(m=>m.w===name||m.l===name);
+  const pw=pm.filter(m=>m.w===name).length;
+  const winPct=pm.length?pw/pm.length:0;
+  const s=getStreak(name);
+  const pos=ranking.findIndex(p=>p.name===name);
+  const sorted=[...pm].sort((a,b)=>a.date.localeCompare(b.date));
+  const firstWon=sorted.length>0&&sorted[0].w===name;
+  const a=[];
+  if(pm.length>=1) a.push({i:'🎾',n:'Debut',d:'Jugó su primer partido'});
+  if(firstWon) a.push({i:'⚡',n:'Debut Ganador',d:'Ganó su primer partido'});
+  if(pm.length>=10) a.push({i:'⭐',n:'10 Partidos',d:'Jugó 10 o más partidos'});
+  if(pm.length>=20) a.push({i:'🌟',n:'Veterano',d:'20 o más partidos jugados'});
+  if(s.type==='w'&&s.count>=3) a.push({i:'🔥',n:'Racha de Fuego',d:'3 victorias consecutivas'});
+  if(s.type==='w'&&s.count>=5) a.push({i:'💪',n:'Invicto',d:'5 victorias seguidas'});
+  if(s.type==='w'&&s.count>=10) a.push({i:'👑',n:'Dominador',d:'10 victorias seguidas'});
+  if(pos===0) a.push({i:'🏆',n:'Líder',d:'Ocupa el #1 del ranking'});
+  if(pm.length>=5&&winPct>=0.7) a.push({i:'🎯',n:'Certero',d:'70%+ de victorias (mín. 5 PJ)'});
+  if(pm.length>=5&&winPct>=0.8) a.push({i:'💎',n:'Elite',d:'80%+ de victorias (mín. 5 PJ)'});
+  return a;
 }
 
 let tab='ranking',search='',selPlayer='';
@@ -284,276 +306,190 @@ function animateCount(el,target,duration){
 function goToStats(name){selPlayer=name;tab='stats';render();window.scrollTo({top:0,behavior:'smooth'});}
 
 function logo(size){
-  return `<svg width="${size}" height="${size}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#061440"/><stop offset="100%" stop-color="#1a3a8f"/>
-    </linearGradient></defs>
-    <rect width="120" height="120" rx="16" fill="url(#lg)"/>
-    <text x="60" y="22" text-anchor="middle" fill="white" font-size="11" font-family="Inter,Arial" letter-spacing="2" opacity="0.9">CLUB TENIS</text>
-    <text x="60" y="78" text-anchor="middle" fill="white" font-size="58" font-weight="900" font-family="Arial Black,sans-serif" letter-spacing="2">AFT</text>
-    <line x1="18" y1="92" x2="72" y2="92" stroke="white" stroke-width="2" opacity="0.7"/>
-    <line x1="22" y1="98" x2="68" y2="98" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <circle cx="90" cy="97" r="13" fill="none" stroke="white" stroke-width="2.5" opacity="0.9"/>
-    <path d="M80 90 Q90 85 100 90" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/>
-    <path d="M80 104 Q90 109 100 104" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/>
-  </svg>`;
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#061440"/><stop offset="100%" stop-color="#1a3a8f"/></linearGradient></defs><rect width="120" height="120" rx="16" fill="url(#lg)"/><text x="60" y="22" text-anchor="middle" fill="white" font-size="11" font-family="Inter,Arial" letter-spacing="2" opacity="0.9">CLUB TENIS</text><text x="60" y="78" text-anchor="middle" fill="white" font-size="58" font-weight="900" font-family="Arial Black,sans-serif" letter-spacing="2">AFT</text><line x1="18" y1="92" x2="72" y2="92" stroke="white" stroke-width="2" opacity="0.7"/><line x1="22" y1="98" x2="68" y2="98" stroke="white" stroke-width="1.5" opacity="0.5"/><circle cx="90" cy="97" r="13" fill="none" stroke="white" stroke-width="2.5" opacity="0.9"/><path d="M80 90 Q90 85 100 90" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/><path d="M80 104 Q90 109 100 104" fill="none" stroke="white" stroke-width="1.5" opacity="0.8"/></svg>';
 }
 
 function racketSVG(w,h,tr,op){
-  return `<svg class="racket-svg" style="width:${w}px;height:${h}px;transform:${tr};opacity:${op}" viewBox="0 0 70 160">
-    <ellipse cx="35" cy="45" rx="26" ry="38" fill="none" stroke="white" stroke-width="4"/>
-    <path d="M22 80 L31 105 L39 105 L48 80" fill="none" stroke="white" stroke-width="3.5"/>
-    <rect x="31" y="104" width="8" height="38" rx="3" fill="none" stroke="white" stroke-width="3.5"/>
-    <line x1="31" y1="112" x2="39" y2="112" stroke="white" stroke-width="1.5" opacity="0.6"/>
-    <line x1="31" y1="120" x2="39" y2="120" stroke="white" stroke-width="1.5" opacity="0.6"/>
-    <line x1="31" y1="128" x2="39" y2="128" stroke="white" stroke-width="1.5" opacity="0.6"/>
-    <rect x="29" y="140" width="12" height="4" rx="2" fill="white" opacity="0.7"/>
-    <line x1="23" y1="12" x2="20" y2="78" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="28" y1="8" x2="26" y2="80" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="33" y1="7" x2="32" y2="81" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="38" y1="7" x2="38" y2="81" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="43" y1="8" x2="44" y2="80" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="10" y1="20" x2="60" y2="20" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="9" y1="28" x2="61" y2="28" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="9" y1="36" x2="61" y2="36" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="10" y1="44" x2="60" y2="44" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="11" y1="52" x2="59" y2="52" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="13" y1="60" x2="57" y2="60" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="16" y1="68" x2="54" y2="68" stroke="white" stroke-width="0.8" opacity="0.5"/>
-    <line x1="20" y1="76" x2="50" y2="76" stroke="white" stroke-width="0.8" opacity="0.5"/>
-  </svg>`;
+  return '<svg class="racket-svg" style="width:'+w+'px;height:'+h+'px;transform:'+tr+';opacity:'+op+'" viewBox="0 0 70 160"><ellipse cx="35" cy="45" rx="26" ry="38" fill="none" stroke="white" stroke-width="4"/><path d="M22 80 L31 105 L39 105 L48 80" fill="none" stroke="white" stroke-width="3.5"/><rect x="31" y="104" width="8" height="38" rx="3" fill="none" stroke="white" stroke-width="3.5"/><line x1="31" y1="112" x2="39" y2="112" stroke="white" stroke-width="1.5" opacity="0.6"/><line x1="31" y1="120" x2="39" y2="120" stroke="white" stroke-width="1.5" opacity="0.6"/><line x1="31" y1="128" x2="39" y2="128" stroke="white" stroke-width="1.5" opacity="0.6"/><rect x="29" y="140" width="12" height="4" rx="2" fill="white" opacity="0.7"/><line x1="23" y1="12" x2="20" y2="78" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="28" y1="8" x2="26" y2="80" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="33" y1="7" x2="32" y2="81" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="38" y1="7" x2="38" y2="81" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="43" y1="8" x2="44" y2="80" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="10" y1="20" x2="60" y2="20" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="9" y1="28" x2="61" y2="28" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="9" y1="36" x2="61" y2="36" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="10" y1="44" x2="60" y2="44" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="11" y1="52" x2="59" y2="52" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="13" y1="60" x2="57" y2="60" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="16" y1="68" x2="54" y2="68" stroke="white" stroke-width="0.8" opacity="0.5"/><line x1="20" y1="76" x2="50" y2="76" stroke="white" stroke-width="0.8" opacity="0.5"/></svg>';
 }
 
 function courtSVG(){
-  return `<svg class="court-bg" viewBox="0 0 480 700" xmlns="http://www.w3.org/2000/svg">
-    <rect x="60" y="60" width="360" height="580" fill="none" stroke="#ffffff" stroke-width="5"/>
-    <rect x="100" y="60" width="280" height="580" fill="none" stroke="#ffffff" stroke-width="3"/>
-    <line x1="60" y1="350" x2="420" y2="350" stroke="#ffffff" stroke-width="4"/>
-    <line x1="60" y1="220" x2="420" y2="220" stroke="#ffffff" stroke-width="2"/>
-    <line x1="240" y1="60" x2="240" y2="220" stroke="#ffffff" stroke-width="2"/>
-    <line x1="60" y1="480" x2="420" y2="480" stroke="#ffffff" stroke-width="2"/>
-    <line x1="240" y1="480" x2="240" y2="640" stroke="#ffffff" stroke-width="2"/>
-    <line x1="55" y1="340" x2="55" y2="360" stroke="#ffffff" stroke-width="5"/>
-    <line x1="425" y1="340" x2="425" y2="360" stroke="#ffffff" stroke-width="5"/>
-  </svg>`;
+  return '<svg class="court-bg" viewBox="0 0 480 700" xmlns="http://www.w3.org/2000/svg"><rect x="60" y="60" width="360" height="580" fill="none" stroke="#ffffff" stroke-width="5"/><rect x="100" y="60" width="280" height="580" fill="none" stroke="#ffffff" stroke-width="3"/><line x1="60" y1="350" x2="420" y2="350" stroke="#ffffff" stroke-width="4"/><line x1="60" y1="220" x2="420" y2="220" stroke="#ffffff" stroke-width="2"/><line x1="240" y1="60" x2="240" y2="220" stroke="#ffffff" stroke-width="2"/><line x1="60" y1="480" x2="420" y2="480" stroke="#ffffff" stroke-width="2"/><line x1="240" y1="480" x2="240" y2="640" stroke="#ffffff" stroke-width="2"/><line x1="55" y1="340" x2="55" y2="360" stroke="#ffffff" stroke-width="5"/><line x1="425" y1="340" x2="425" y2="360" stroke="#ffffff" stroke-width="5"/></svg>';
 }
 
 function statBar(p,lL,lR,cL,cR){
-  const cl=cL||'#3a7bd5',cr=cR||'#e05252',r=100-p;
-  return `<div class="bar-wrap">
-    ${p>0?`<div class="bar-left" style="width:${p}%;background:${cl}">${p}%</div>`:''}
-    ${r>0?`<div class="bar-right" style="width:${r}%;background:${cr}">${r}%</div>`:''}
-  </div>
-  <div class="bar-labels"><span style="color:${cl}">✅ ${lL}</span><span style="color:${cr}">❌ ${lR}</span></div>`;
+  var cl=cL||'#3a7bd5',cr=cR||'#e05252',r=100-p;
+  return '<div class="bar-wrap">'+(p>0?'<div class="bar-left" style="width:'+p+'%;background:'+cl+'">'+p+'%</div>':'')+(r>0?'<div class="bar-right" style="width:'+r+'%;background:'+cr+'">'+r+'%</div>':'')+'</div><div class="bar-labels"><span style="color:'+cl+'">✅ '+lL+'</span><span style="color:'+cr+'">❌ '+lR+'</span></div>';
 }
 
 function renderDashboard(){
-  const ranking=buildRanking();
-  const allPlayers=getAllPlayers();
-  const top3=ranking.slice(0,3);
-  const recent=[...MATCHES].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-  const monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio'};
-  const byMonth={};
-  MATCHES.forEach(m=>{const mo=m.date.slice(5,7);byMonth[mo]=(byMonth[mo]||0)+1;});
-  const maxMonth=Math.max(...Object.values(byMonth));
-  const activity={};
-  MATCHES.forEach(m=>{activity[m.w]=(activity[m.w]||0)+1;activity[m.l]=(activity[m.l]||0)+1;});
-  const mostActive=Object.entries(activity).sort((a,b)=>b[1]-a[1])[0];
-  const streaks=ranking.map(p=>{const s=getStreak(p.name);return {...s,name:p.name};}).filter(s=>s.type==='w'&&s.count>=2).sort((a,b)=>b.count-a.count);
-  const bestStreak=streaks[0];
-  const topWinner=ranking[0];
-  const bestPct=ranking.filter(p=>p.played>=3).sort((a,b)=>(b.won/b.played)-(a.won/a.played))[0];
+  var ranking=buildRanking();
+  var allPlayers=getAllPlayers();
+  var top3=ranking.slice(0,3);
+  var recent=[].concat(MATCHES).sort(function(a,b){return b.date.localeCompare(a.date);}).slice(0,5);
+  var monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio'};
+  var byMonth={};
+  MATCHES.forEach(function(m){var mo=m.date.slice(5,7);byMonth[mo]=(byMonth[mo]||0)+1;});
+  var maxMonth=Math.max.apply(null,Object.values(byMonth));
+  var activity={};
+  MATCHES.forEach(function(m){activity[m.w]=(activity[m.w]||0)+1;activity[m.l]=(activity[m.l]||0)+1;});
+  var mostActive=Object.entries(activity).sort(function(a,b){return b[1]-a[1];})[0];
+  var streaks=ranking.map(function(p){var s=getStreak(p.name);return {type:s.type,count:s.count,name:p.name};}).filter(function(s){return s.type==='w'&&s.count>=2;}).sort(function(a,b){return b.count-a.count;});
+  var bestStreak=streaks[0];
+  var topWinner=ranking[0];
+  var bestPct=ranking.filter(function(p){return p.played>=3;}).sort(function(a,b){return (b.won/b.played)-(a.won/a.played);})[0];
+  var allAchievements=[];
+  ranking.forEach(function(p){
+    var achv=getAchievements(p.name,ranking);
+    achv.filter(function(a){return ['💎','👑','💪','🏆','🌟'].indexOf(a.i)>=0;}).forEach(function(a){allAchievements.push({player:p.name,icon:a.i,name:a.n});});
+  });
 
-  return `<div class="page">
-    <div class="section-title">Dashboard</div>
-    <div class="section-sub">Liga 2026 · Análisis completo</div>
-    <div class="dash-grid">
-      <div class="dash-card"><div class="dash-icon">🎾</div><div class="dash-val" style="color:#f0c040">${MATCHES.length}</div><div class="dash-lbl">Partidos</div></div>
-      <div class="dash-card"><div class="dash-icon">👥</div><div class="dash-val" style="color:#52d48a">${allPlayers.length}</div><div class="dash-lbl">Jugadores</div></div>
-      <div class="dash-card"><div class="dash-icon">🔥</div><div class="dash-val" style="color:#ff6b6b">${bestStreak?bestStreak.count:'-'}</div><div class="dash-lbl">Mejor racha</div>${bestStreak?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${bestStreak.name.split(' ')[0]}</div>`:''}</div>
-      <div class="dash-card"><div class="dash-icon">⚡</div><div class="dash-val" style="color:#a78bfa">${mostActive?mostActive[1]:'-'}</div><div class="dash-lbl">Más activo</div>${mostActive?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${mostActive[0].split(' ')[0]}</div>`:''}</div>
-    </div>
-    <div class="dash-grid">
-      <div class="dash-card"><div class="dash-icon">🏆</div><div class="dash-val" style="color:#f0c040;font-size:22px">${topWinner?topWinner.won:'-'}</div><div class="dash-lbl">Más victorias</div>${topWinner?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${topWinner.name.split(' ')[0]}</div>`:''}</div>
-      <div class="dash-card"><div class="dash-icon">🎯</div><div class="dash-val" style="color:#52d48a;font-size:22px">${bestPct?Math.round(bestPct.won/bestPct.played*100)+'%':'-'}</div><div class="dash-lbl">Mejor %</div>${bestPct?`<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">${bestPct.name.split(' ')[0]}</div>`:''}</div>
-      <div class="dash-card"><div class="dash-icon">📅</div><div class="dash-val" style="color:#60a5fa;font-size:22px">${Object.keys(byMonth).length}</div><div class="dash-lbl">Meses activos</div></div>
-      <div class="dash-card"><div class="dash-icon">📊</div><div class="dash-val" style="color:#f472b6;font-size:22px">${Math.round(MATCHES.length/allPlayers.length*10)/10}</div><div class="dash-lbl">PJ por jugador</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">🏆 Top 3 del ranking</div>
-      ${top3.map((p,i)=>{const s=getStreak(p.name);return `<div class="top-player">
-        <div class="top-player-rank">${i===0?'🥇':i===1?'🥈':'🥉'}</div>
-        <div style="flex:1"><div class="top-player-name" style="cursor:pointer" onclick="goToStats('${p.name}')">${p.name} <span style="font-size:10px;opacity:0.4">›</span></div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">${p.played} PJ · ${Math.round(p.won/p.played*100)}% victorias</div></div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-          <div class="top-player-pts">${p.pts} pts</div>
-          ${s.count>=2?`<span class="streak-badge ${s.type==='w'?'streak-w':'streak-l'}">${s.type==='w'?'🔥':'❄️'} ${s.count}</span>`:''}
-        </div></div>`;}).join('')}
-    </div>
-    <div class="card">
-      <div class="card-title">📅 Actividad por mes</div>
-      ${Object.entries(byMonth).sort().map(([mo,cnt])=>`
-        <div class="month-row">
-          <div class="month-name">${monthNames[mo]||mo}</div>
-          <div style="flex:1;margin:0 12px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${Math.round(cnt/maxMonth*100)}%"></div></div></div>
-          <div class="month-count">${cnt} 🎾</div>
-        </div>`).join('')}
-    </div>
-    <div class="card">
-      <div class="card-title">⏱ Últimos partidos</div>
-      ${recent.map(m=>`<div class="recent-match">
-        <div><div class="recent-names">✅ ${m.w} <span style="color:rgba(255,255,255,0.3)">vs</span> ${m.l}</div>
-        <div class="recent-date">📅 ${m.date} · ${m.score}</div></div>
-      </div>`).join('')}
-    </div>
-    ${streaks.length>0?`<div class="card">
-      <div class="card-title">🔥 Rachas ganadoras activas</div>
-      ${streaks.slice(0,6).map(s=>`<div class="top-player">
-        <span class="streak-badge streak-w" style="min-width:80px;justify-content:center">🔥 ${s.count} seguidas</span>
-        <div class="top-player-name" style="cursor:pointer;margin-left:10px" onclick="goToStats('${s.name}')">${s.name} <span style="font-size:10px;opacity:0.4">›</span></div>
-      </div>`).join('')}
-    </div>`:''}
-    <div class="card">
-      <div class="card-title">📈 Top 5 rendimiento (mín. 3 PJ)</div>
-      ${ranking.filter(p=>p.played>=3).slice(0,5).map((p,i)=>{const pv=Math.round(p.won/p.played*100);return `
-        <div class="month-row">
-          <div style="font-size:12px;color:#fff;font-weight:600;min-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i+1}. ${p.name.split(' ')[0]}</div>
-          <div style="flex:1;margin:0 10px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:${pv}%;background:linear-gradient(90deg,#f0c040,#f97316)"></div></div></div>
-          <div style="font-size:12px;color:#f0c040;font-weight:700;min-width:36px;text-align:right">${pv}%</div>
-        </div>`;}).join('')}
-    </div>
-  </div>`;
+  var html='<div class="page"><div class="section-title">Dashboard</div><div class="section-sub">Liga 2026 · Análisis completo</div>';
+  html+='<div class="dash-grid"><div class="dash-card"><div class="dash-icon">🎾</div><div class="dash-val" style="color:#f0c040">'+MATCHES.length+'</div><div class="dash-lbl">Partidos</div></div>';
+  html+='<div class="dash-card"><div class="dash-icon">👥</div><div class="dash-val" style="color:#52d48a">'+allPlayers.length+'</div><div class="dash-lbl">Jugadores</div></div>';
+  html+='<div class="dash-card"><div class="dash-icon">🔥</div><div class="dash-val" style="color:#ff6b6b">'+(bestStreak?bestStreak.count:'-')+'</div><div class="dash-lbl">Mejor racha</div>'+(bestStreak?'<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">'+bestStreak.name.split(' ')[0]+'</div>':'')+'</div>';
+  html+='<div class="dash-card"><div class="dash-icon">⚡</div><div class="dash-val" style="color:#a78bfa">'+(mostActive?mostActive[1]:'-')+'</div><div class="dash-lbl">Más activo</div>'+(mostActive?'<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">'+mostActive[0].split(' ')[0]+'</div>':'')+'</div></div>';
+  html+='<div class="dash-grid"><div class="dash-card"><div class="dash-icon">🏆</div><div class="dash-val" style="color:#f0c040;font-size:22px">'+(topWinner?topWinner.won:'-')+'</div><div class="dash-lbl">Más victorias</div>'+(topWinner?'<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">'+topWinner.name.split(' ')[0]+'</div>':'')+'</div>';
+  html+='<div class="dash-card"><div class="dash-icon">🎯</div><div class="dash-val" style="color:#52d48a;font-size:22px">'+(bestPct?Math.round(bestPct.won/bestPct.played*100)+'%':'-')+'</div><div class="dash-lbl">Mejor %</div>'+(bestPct?'<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px">'+bestPct.name.split(' ')[0]+'</div>':'')+'</div>';
+  html+='<div class="dash-card"><div class="dash-icon">📅</div><div class="dash-val" style="color:#60a5fa;font-size:22px">'+Object.keys(byMonth).length+'</div><div class="dash-lbl">Meses activos</div></div>';
+  html+='<div class="dash-card"><div class="dash-icon">📊</div><div class="dash-val" style="color:#f472b6;font-size:22px">'+Math.round(MATCHES.length/allPlayers.length*10)/10+'</div><div class="dash-lbl">PJ por jugador</div></div></div>';
+
+  html+='<div class="card"><div class="card-title">🏆 Top 3 del ranking</div>';
+  top3.forEach(function(p,i){
+    var s=getStreak(p.name);
+    html+='<div class="top-player"><div style="font-size:18px;min-width:28px">'+(i===0?'🥇':i===1?'🥈':'🥉')+'</div><div style="flex:1"><div class="top-player-name" style="cursor:pointer" onclick="goToStats(\''+p.name+'\')">'+p.name+' <span style="font-size:10px;opacity:0.4">›</span></div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">'+p.played+' PJ · '+Math.round(p.won/p.played*100)+'% victorias</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><div class="top-player-pts">'+p.pts+' pts</div>'+(s.count>=2?'<span class="streak-badge '+(s.type==='w'?'streak-w':'streak-l')+'">'+(s.type==='w'?'🔥':'❄️')+' '+s.count+'</span>':'')+'</div></div>';
+  });
+  html+='</div>';
+
+  html+='<div class="card"><div class="card-title">📅 Actividad por mes</div>';
+  Object.entries(byMonth).sort().forEach(function(e){
+    var mo=e[0],cnt=e[1],barPct=Math.round(cnt/maxMonth*100);
+    html+='<div class="month-row"><div class="month-name">'+(monthNames[mo]||mo)+'</div><div style="flex:1;margin:0 12px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:'+barPct+'%"></div></div></div><div class="month-count">'+cnt+' 🎾</div></div>';
+  });
+  html+='</div>';
+
+  html+='<div class="card"><div class="card-title">⏱ Últimos partidos</div>';
+  recent.forEach(function(m){
+    html+='<div class="recent-match"><div><div class="recent-names">✅ '+m.w+' <span style="color:rgba(255,255,255,0.3)">vs</span> '+m.l+'</div><div class="recent-date">📅 '+m.date+' · '+m.score+'</div></div></div>';
+  });
+  html+='</div>';
+
+  if(streaks.length>0){
+    html+='<div class="card"><div class="card-title">🔥 Rachas ganadoras activas</div>';
+    streaks.slice(0,6).forEach(function(s){
+      html+='<div class="top-player"><span class="streak-badge streak-w" style="min-width:80px;justify-content:center">🔥 '+s.count+' seguidas</span><div class="top-player-name" style="cursor:pointer;margin-left:10px" onclick="goToStats(\''+s.name+'\')">'+s.name+' <span style="font-size:10px;opacity:0.4">›</span></div></div>';
+    });
+    html+='</div>';
+  }
+
+  if(allAchievements.length>0){
+    html+='<div class="card"><div class="card-title">🏅 Logros destacados</div>';
+    allAchievements.slice(0,8).forEach(function(a){
+      html+='<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="font-size:20px">'+a.icon+'</span><div style="flex:1"><div style="font-size:12px;font-weight:700;color:#fff">'+a.name+'</div></div><div style="font-size:11px;color:rgba(255,255,255,0.4);cursor:pointer" onclick="goToStats(\''+a.player+'\')">'+a.player.split(' ')[0]+' ›</div></div>';
+    });
+    html+='</div>';
+  }
+
+  html+='<div class="card"><div class="card-title">📈 Top 5 rendimiento (mín. 3 PJ)</div>';
+  ranking.filter(function(p){return p.played>=3;}).slice(0,5).forEach(function(p,i){
+    var pv=Math.round(p.won/p.played*100);
+    html+='<div class="month-row"><div style="font-size:12px;color:#fff;font-weight:600;min-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(i+1)+'. '+p.name.split(' ')[0]+'</div><div style="flex:1;margin:0 10px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:'+pv+'%;background:linear-gradient(90deg,#f0c040,#f97316)"></div></div></div><div style="font-size:12px;color:#f0c040;font-weight:700;min-width:36px;text-align:right">'+pv+'%</div></div>';
+  });
+  html+='</div></div>';
+  return html;
 }
 
 function renderRanking(){
-  const ranking=buildRanking();
-  return `<div class="page">
-    <div class="section-title">Escalerilla</div>
-    <div class="section-sub">Liga 2026 · ${ranking.length} jugadores</div>
-    <div class="ranking-list">
-      ${ranking.map((p,i)=>{const s=getStreak(p.name);return `
-        <div class="rank-card ${i===0?'top1':i===1?'top2':i===2?'top3':''}">
-          <div class="rank-pos">${i===0?'<div class="ball-rank ball-rank-1"><span>1</span></div>':i===1?'<div class="ball-rank ball-rank-2"><span>2</span></div>':i===2?'<div class="ball-rank ball-rank-3"><span>3</span></div>':'<span style="font-size:15px;color:rgba(255,255,255,0.3)">#'+(i+1)+'</span>'}</div>
-          <div style="flex:1">
-            <div class="rank-name" onclick="goToStats('${p.name}')">${p.name} <span class="arrow">›</span></div>
-            <div class="rank-detail">${p.played} PJ · ${p.won}G / ${p.lost}P · ${p.played?Math.round(p.won/p.played*100):0}%
-              ${s.count>=2?`<span class="streak-badge ${s.type==='w'?'streak-w':'streak-l'}" style="margin-left:6px;padding:2px 6px">${s.type==='w'?'🔥':'❄️'}${s.count}</span>`:''}
-            </div>
-          </div>
-          <div class="rank-pts"><div class="rank-pts-val" id="pts-${i}">0</div><div class="rank-pts-lbl">pts</div></div>
-        </div>`;}).join('')}
-    </div>
-  </div>`;
+  var ranking=buildRanking();
+  var html='<div class="page"><div class="section-title">Escalerilla</div><div class="section-sub">Liga 2026 · '+ranking.length+' jugadores</div><div class="ranking-list">';
+  ranking.forEach(function(p,i){
+    var s=getStreak(p.name);
+    var pos=i===0?'<div class="ball-rank ball-rank-1"><span>1</span></div>':i===1?'<div class="ball-rank ball-rank-2"><span>2</span></div>':i===2?'<div class="ball-rank ball-rank-3"><span>3</span></div>':'<span style="font-size:15px;color:rgba(255,255,255,0.3)">#'+(i+1)+'</span>';
+    html+='<div class="rank-card '+(i===0?'top1':i===1?'top2':i===2?'top3':'')+'"><div class="rank-pos">'+pos+'</div><div style="flex:1"><div class="rank-name" onclick="goToStats(\''+p.name+'\')">'+p.name+' <span class="arrow">›</span></div><div class="rank-detail">'+p.played+' PJ · '+p.won+'G / '+p.lost+'P · '+(p.played?Math.round(p.won/p.played*100):0)+'%'+(s.count>=2?' <span class="streak-badge '+(s.type==='w'?'streak-w':'streak-l')+'" style="padding:2px 6px">'+(s.type==='w'?'🔥':'❄️')+s.count+'</span>':'')+'</div></div><div class="rank-pts"><div class="rank-pts-val" id="pts-'+i+'">0</div><div class="rank-pts-lbl">pts</div></div></div>';
+  });
+  html+='</div></div>';
+  return html;
 }
 
 function renderStats(){
-  const players=getAllPlayers();
-  let body='';
+  var players=getAllPlayers();
+  var ranking=buildRanking();
+  var body='';
   if(selPlayer){
-    const pm=MATCHES.filter(m=>m.w===selPlayer||m.l===selPlayer);
-    const pw=pm.filter(m=>m.w===selPlayer).length;
-    const pl=pm.length-pw;
-    const p=pct(pw,pl);
-    const sW=pm.reduce((a,m)=>a+(m.w===selPlayer?m.wS:m.lS),0);
-    const sL=pm.reduce((a,m)=>a+(m.w===selPlayer?m.lS:m.wS),0);
-    const pS=pct(sW,sL);
-    const s=getStreak(selPlayer);
-    const sorted=[...pm].sort((a,b)=>b.date.localeCompare(a.date));
-    const rivals={};
-    pm.forEach(m=>{const r=m.w===selPlayer?m.l:m.w;rivals[r]=(rivals[r]||0)+1;});
-    const topRival=Object.entries(rivals).sort((a,b)=>b[1]-a[1])[0];
-    const hardest=Object.entries(rivals).filter(([r])=>pm.some(m=>m.l===selPlayer&&m.w===r)).sort((a,b)=>{
-      const aL=pm.filter(m=>m.l===selPlayer&&m.w===a[0]).length;
-      const bL=pm.filter(m=>m.l===selPlayer&&m.w===b[0]).length;
+    var pm=MATCHES.filter(function(m){return m.w===selPlayer||m.l===selPlayer;});
+    var pw=pm.filter(function(m){return m.w===selPlayer;}).length;
+    var pl=pm.length-pw;
+    var p=pct(pw,pl);
+    var sW=pm.reduce(function(a,m){return a+(m.w===selPlayer?m.wS:m.lS);},0);
+    var sL=pm.reduce(function(a,m){return a+(m.w===selPlayer?m.lS:m.wS);},0);
+    var pS=pct(sW,sL);
+    var s=getStreak(selPlayer);
+    var sorted=[].concat(pm).sort(function(a,b){return b.date.localeCompare(a.date);});
+    var rivals={};
+    pm.forEach(function(m){var r=m.w===selPlayer?m.l:m.w;rivals[r]=(rivals[r]||0)+1;});
+    var topRival=Object.entries(rivals).sort(function(a,b){return b[1]-a[1];})[0];
+    var hardest=Object.entries(rivals).filter(function(e){return pm.some(function(m){return m.l===selPlayer&&m.w===e[0];});}).sort(function(a,b){
+      var aL=pm.filter(function(m){return m.l===selPlayer&&m.w===a[0];}).length;
+      var bL=pm.filter(function(m){return m.l===selPlayer&&m.w===b[0];}).length;
       return bL-aL;
     })[0];
-    body=`
-      ${s.count>=2?`<div class="card" style="border:1px solid ${s.type==='w'?'rgba(82,212,138,0.3)':'rgba(224,82,82,0.3)'}">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:28px">${s.type==='w'?'🔥':'❄️'}</span>
-          <div><div style="font-weight:700;color:#fff">${s.type==='w'?'Racha ganadora':'Racha perdedora'}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.5)">${s.count} partidos consecutivos ${s.type==='w'?'ganados':'perdidos'}</div></div>
-        </div></div>`:''}
-      <div class="stat-grid">
-        ${[['🎾','#f0c040',pm.length,'Partidos'],['⭐','#f0c040',pw*10,'Puntos'],['✅','#52d48a',pw,'Ganados'],['❌','#e05252',pl,'Perdidos']].map(([ic,c,v,l])=>`
-          <div class="stat-card"><div class="stat-icon">${ic}</div><div class="stat-val" style="color:${c}">${v}</div><div class="stat-lbl">${l}</div></div>`).join('')}
-      </div>
-      <div class="card"><div class="card-title">% Victorias vs Derrotas</div>${statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')}</div>
-      <div class="card"><div class="card-title">% Sets Ganados vs Perdidos</div>${statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')}</div>
-      ${topRival||hardest?`<div class="card"><div class="card-title">🎯 Análisis de rivales</div>
-        ${topRival?`<div class="top-player"><span style="font-size:18px">🤝</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más frecuente</div><div style="font-weight:700;color:#fff">${topRival[0]}</div></div><div style="font-size:12px;color:#f0c040">${topRival[1]} PJ</div></div>`:''}
-        ${hardest?`<div class="top-player"><span style="font-size:18px">⚔️</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más difícil</div><div style="font-weight:700;color:#fff">${hardest[0]}</div></div></div>`:''}
-      </div>`:''}
-      <div class="card"><div class="card-title">Historial de partidos</div>
-        ${sorted.map(m=>{const won=m.w===selPlayer;const rival=won?m.l:m.w;return `
-          <div class="player-history-item" style="border-left:3px solid ${won?'#52d48a':'#e05252'}">
-            <div class="player-history-name">vs ${rival} <span style="font-weight:400;color:rgba(255,255,255,0.4)">— ${m.score}</span></div>
-            <div class="player-history-date">${m.date} · ${won?'✅ Victoria (+10 pts)':'❌ Derrota (0 pts)'}</div>
-          </div>`;}).join('')}
-      </div>`;
+    var achv=getAchievements(selPlayer,ranking);
+
+    if(s.count>=2){
+      body+='<div class="card" style="border:1px solid '+(s.type==='w'?'rgba(82,212,138,0.3)':'rgba(224,82,82,0.3)')+'"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:28px">'+(s.type==='w'?'🔥':'❄️')+'</span><div><div style="font-weight:700;color:#fff">'+(s.type==='w'?'Racha ganadora':'Racha perdedora')+'</div><div style="font-size:12px;color:rgba(255,255,255,0.5)">'+s.count+' partidos consecutivos '+(s.type==='w'?'ganados':'perdidos')+'</div></div></div></div>';
+    }
+    body+='<div class="stat-grid"><div class="stat-card"><div class="stat-icon">🎾</div><div class="stat-val" style="color:#f0c040">'+pm.length+'</div><div class="stat-lbl">Partidos</div></div><div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-val" style="color:#f0c040">'+pw*10+'</div><div class="stat-lbl">Puntos</div></div><div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" style="color:#52d48a">'+pw+'</div><div class="stat-lbl">Ganados</div></div><div class="stat-card"><div class="stat-icon">❌</div><div class="stat-val" style="color:#e05252">'+pl+'</div><div class="stat-lbl">Perdidos</div></div></div>';
+    body+='<div class="card"><div class="card-title">% Victorias vs Derrotas</div>'+statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')+'</div>';
+    body+='<div class="card"><div class="card-title">% Sets Ganados vs Perdidos</div>'+statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')+'</div>';
+
+    if(topRival||hardest){
+      body+='<div class="card"><div class="card-title">🎯 Análisis de rivales</div>';
+      if(topRival) body+='<div class="top-player"><span style="font-size:18px">🤝</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más frecuente</div><div style="font-weight:700;color:#fff">'+topRival[0]+'</div></div><div style="font-size:12px;color:#f0c040">'+topRival[1]+' PJ</div></div>';
+      if(hardest) body+='<div class="top-player"><span style="font-size:18px">⚔️</span><div style="flex:1;margin-left:10px"><div style="font-size:11px;color:rgba(255,255,255,0.5)">Rival más difícil</div><div style="font-weight:700;color:#fff">'+hardest[0]+'</div></div></div>';
+      body+='</div>';
+    }
+
+    if(achv.length>0){
+      body+='<div class="card"><div class="card-title">🏅 Logros obtenidos ('+achv.length+')</div>';
+      achv.forEach(function(a){
+        body+='<div class="achievement-badge"><div class="ach-icon">'+a.i+'</div><div><div class="ach-name">'+a.n+'</div><div class="ach-desc">'+a.d+'</div></div></div>';
+      });
+      body+='</div>';
+    }
+
+    body+='<div class="card"><div class="card-title">Historial de partidos</div>';
+    sorted.forEach(function(m){
+      var won=m.w===selPlayer;
+      var rival=won?m.l:m.w;
+      body+='<div class="player-history-item" style="border-left:3px solid '+(won?'#52d48a':'#e05252')+'"><div class="player-history-name">vs '+rival+' <span style="font-weight:400;color:rgba(255,255,255,0.4)">— '+m.score+'</span></div><div class="player-history-date">'+m.date+' · '+(won?'✅ Victoria (+10 pts)':'❌ Derrota (0 pts)')+'</div></div>';
+    });
+    body+='</div>';
   }
-  return `<div class="page">
-    <div class="section-title">Estadísticas</div>
-    <div class="section-sub">Por jugador</div>
-    <select id="playerSelect" onchange="selPlayer=this.value;render()">
-      <option value="">— Selecciona un jugador —</option>
-      ${players.map(p=>`<option value="${p}" ${p===selPlayer?'selected':''}>${p}</option>`).join('')}
-    </select>
-    ${body}
-  </div>`;
+  var opts=players.map(function(p){return '<option value="'+p+'" '+(p===selPlayer?'selected':'')+'>'+p+'</option>';}).join('');
+  return '<div class="page"><div class="section-title">Estadísticas</div><div class="section-sub">Por jugador</div><select id="playerSelect" onchange="selPlayer=this.value;render()"><option value="">— Selecciona un jugador —</option>'+opts+'</select>'+body+'</div>';
 }
 
 function renderHistory(){
-  const filtered=search?MATCHES.filter(m=>m.w.toLowerCase().includes(search.toLowerCase())||m.l.toLowerCase().includes(search.toLowerCase())):MATCHES;
-  const sorted=[...filtered].sort((a,b)=>b.date.localeCompare(a.date));
-  return `<div class="page">
-    <div class="section-title">Historial</div>
-    <div class="section-sub">${MATCHES.length} partidos registrados</div>
-    <input type="text" placeholder="🔍 Buscar jugador..." value="${search}" oninput="search=this.value;render()"/>
-    <div>${sorted.map(m=>`
-      <div class="history-item" style="border-left:3px solid #52d48a">
-        <div class="history-names">${m.w} <span style="color:rgba(255,255,255,0.3);font-weight:400">vs</span> ${m.l}</div>
-        <div class="history-detail">📅 ${m.date} · 🏟️ Arcilla · <b style="color:rgba(255,255,255,0.7)">${m.score}</b></div>
-        <div class="history-result" style="color:#52d48a">✅ Ganó ${m.w}</div>
-      </div>`).join('')}
-    </div>
-  </div>`;
+  var filtered=search?MATCHES.filter(function(m){return m.w.toLowerCase().indexOf(search.toLowerCase())>=0||m.l.toLowerCase().indexOf(search.toLowerCase())>=0;}):MATCHES;
+  var sorted=[].concat(filtered).sort(function(a,b){return b.date.localeCompare(a.date);});
+  var html='<div class="page"><div class="section-title">Historial</div><div class="section-sub">'+MATCHES.length+' partidos registrados</div><input type="text" placeholder="🔍 Buscar jugador..." value="'+search+'" oninput="search=this.value;render()"/><div>';
+  sorted.forEach(function(m){
+    html+='<div class="history-item" style="border-left:3px solid #52d48a"><div class="history-names">'+m.w+' <span style="color:rgba(255,255,255,0.3);font-weight:400">vs</span> '+m.l+'</div><div class="history-detail">📅 '+m.date+' · 🏟️ Arcilla · <b style="color:rgba(255,255,255,0.7)">'+m.score+'</b></div><div class="history-result" style="color:#52d48a">✅ Ganó '+m.w+'</div></div>';
+  });
+  html+='</div></div>';
+  return html;
 }
 
 function render(){
-  const ranking=buildRanking();
-  const allPlayers=getAllPlayers();
-  const navItems=[['dashboard','📊','Dashboard'],['ranking','🏆','Ranking'],['stats','👤','Stats'],['history','📋','Historial']];
-  document.getElementById('app').innerHTML=`
-    <div class="app">
-      <div class="header">
-        ${racketSVG(140,200,'rotate(-35deg) translate(-20px,170px)',0.09)}
-        ${racketSVG(130,190,'rotate(30deg) translate(60px,-10px)',0.09)}
-        <div class="ball"></div>
-        <div class="header-top">
-          <div class="header-info">
-            <div class="liga">Liga 2026</div>
-            <div class="count">${MATCHES.length} partidos · ${allPlayers.length} jugadores</div>
-          </div>
-          ${logo(72)}
-        </div>
-      </div>
-      <div class="content">
-        ${courtSVG()}
-        <div class="content-inner">
-          ${tab==='dashboard'?renderDashboard():tab==='ranking'?renderRanking():tab==='stats'?renderStats():renderHistory()}
-        </div>
-      </div>
-      <nav class="bottom-nav">
-        ${navItems.map(([k,ic,l])=>`
-          <button class="nav-btn ${tab===k?'active':''}" onclick="tab='${k}';render()">
-            <div class="nav-icon">${ic}</div><div>${l}</div>
-          </button>`).join('')}
-      </nav>
-    </div>`;
+  var ranking=buildRanking();
+  var allPlayers=getAllPlayers();
+  var navItems=[['dashboard','📊','Dashboard'],['ranking','🏆','Ranking'],['stats','👤','Stats'],['history','📋','Historial']];
+  var navHtml=navItems.map(function(n){return '<button class="nav-btn '+(tab===n[0]?'active':'')+'" onclick="tab=\''+n[0]+'\';render()"><div class="nav-icon">'+n[1]+'</div><div>'+n[2]+'</div></button>';}).join('');
+  var content=tab==='dashboard'?renderDashboard():tab==='ranking'?renderRanking():tab==='stats'?renderStats():renderHistory();
+  document.getElementById('app').innerHTML='<div class="app"><div class="header">'+racketSVG(140,200,'rotate(-35deg) translate(-20px,170px)',0.09)+racketSVG(130,190,'rotate(30deg) translate(60px,-10px)',0.09)+'<div class="ball"></div><div class="header-top"><div class="header-info"><div class="liga">Liga 2026</div><div class="count">'+MATCHES.length+' partidos · '+allPlayers.length+' jugadores</div></div>'+logo(72)+'</div></div><div class="content">'+courtSVG()+'<div class="content-inner">'+content+'</div></div><nav class="bottom-nav">'+navHtml+'</nav></div>';
   if(tab==='ranking'){
-    ranking.forEach((p,i)=>{
-      const el=document.getElementById('pts-'+i);
+    ranking.forEach(function(p,i){
+      var el=document.getElementById('pts-'+i);
       if(el) animateCount(el,p.pts,1200+i*80);
     });
   }
