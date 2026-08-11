@@ -377,7 +377,7 @@ function renderDashboard(){
   });
   html+='</div>';
 
-
+None
 
   if(streaks.length>0){
     html+='<div class="card"><div class="card-title">🔥 Rachas ganadoras activas</div>';
@@ -442,7 +442,7 @@ function renderStats(){
     body+='<div class="card"><div class="card-title">% Victorias vs Derrotas</div>'+statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')+'</div>';
     body+='<div class="card"><div class="card-title">% Sets Ganados vs Perdidos</div>'+statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')+'</div>';
 
-
+None
 
     if(achv.length>0){
       body+='<div class="card"><div class="card-title">🏅 Logros obtenidos ('+achv.length+')</div>';
@@ -459,6 +459,17 @@ function renderStats(){
       body+='<div class="player-history-item" style="border-left:3px solid '+(won?'#52d48a':'#e05252')+'"><div class="player-history-name">vs '+rival+' <span style="font-weight:400;color:rgba(255,255,255,0.4)">— '+m.score+'</span></div><div class="player-history-date">'+m.date+' · '+(won?'✅ Victoria (+10 pts)':'❌ Derrota (0 pts)')+'</div></div>';
     });
     body+='</div>';
+
+    var allP=getAllPlayers();
+    var rivalesJugados=pm.map(function(m){return m.w===selPlayer?m.l:m.w;});
+    var pendientes=allP.filter(function(p){return p!==selPlayer&&rivalesJugados.indexOf(p)<0;}).sort();
+    if(pendientes.length>0){
+      body+='<div class="card"><div class="card-title">⏳ Partidos pendientes ('+pendientes.length+')</div>';
+      pendientes.forEach(function(p){
+        body+='<div class="player-history-item" style="border-left:3px solid rgba(255,255,255,0.15)"><div class="player-history-name" style="color:rgba(255,255,255,0.7)">vs '+p+'</div><div class="player-history-date">⏳ Pendiente</div></div>';
+      });
+      body+='</div>';
+    }
   }
   var opts=players.map(function(p){return '<option value="'+p+'" '+(p===selPlayer?'selected':'')+'>'+p+'</option>';}).join('');
   return '<div class="page"><div class="section-title">Estadísticas</div><div class="section-sub">Por jugador</div><select id="playerSelect" onchange="selPlayer=this.value;render()"><option value="">— Selecciona un jugador —</option>'+opts+'</select>'+body+'</div>';
