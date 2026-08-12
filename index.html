@@ -507,8 +507,8 @@ function render(){
 render();
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('/service-worker.js');
+  navigator.serviceWorker.getRegistrations().then(function(regs){
+    regs.forEach(function(reg){ reg.unregister(); });
   });
 }
 </script>
