@@ -4,15 +4,6 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Club Tenis AFT</title>
-
-  <!-- PWA -->
-  <link rel="manifest" href="/manifest.json"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="AFT Liga"/>
-  <meta name="theme-color" content="#0a1f5c"/>
-  <link rel="apple-touch-icon" href="/icon-192.png"/>
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -101,10 +92,6 @@
     .month-count{font-size:12px;color:#f0c040;font-weight:700;min-width:40px;text-align:right}
     .mini-bar-wrap{height:6px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.08);margin-top:6px}
     .mini-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,#3a7bd5,#52d48a)}
-    .recent-match{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
-    .recent-match:last-child{border-bottom:none}
-    .recent-names{font-size:12px;color:#fff;font-weight:600}
-    .recent-date{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px}
     .achievement-badge{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:8px;margin-bottom:8px}
     .ach-icon{font-size:22px;flex-shrink:0}
     .ach-name{font-size:12px;font-weight:700;color:#fff}
@@ -114,7 +101,7 @@
 <body>
 <div id="app"></div>
 <script>
-const MATCHES=[
+var MATCHES=[
   {id:1,w:"Álvaro Barros",l:"Carlos Villablanca",date:"2026-03-07",score:"6-2 4-6 6-2",wS:2,lS:1},
   {id:2,w:"Arturo Rodriguez",l:"Rodrigo Silva",date:"2026-03-07",score:"6-1 6-1",wS:2,lS:0},
   {id:3,w:"Juan Díaz Navarrete",l:"Juan Órdenes",date:"2026-03-07",score:"6-0 6-3",wS:2,lS:0},
@@ -255,41 +242,39 @@ const MATCHES=[
 ];
 
 function buildRanking(){
-  const p={};
-  const e=n=>{if(!p[n])p[n]={name:n,pts:0,played:0,won:0,lost:0};};
-  MATCHES.forEach(m=>{e(m.w);e(m.l);p[m.w].played++;p[m.l].played++;p[m.w].pts+=10;p[m.w].won++;p[m.l].lost++;});
-  return Object.values(p).sort((a,b)=>{
+  var p={};
+  var e=function(n){if(!p[n])p[n]={name:n,pts:0,played:0,won:0,lost:0};};
+  MATCHES.forEach(function(m){e(m.w);e(m.l);p[m.w].played++;p[m.l].played++;p[m.w].pts+=10;p[m.w].won++;p[m.l].lost++;});
+  return Object.values(p).sort(function(a,b){
     if(b.pts!==a.pts) return b.pts-a.pts;
-    const pA=a.played?a.won/a.played:0,pB=b.played?b.won/b.played:0;
+    var pA=a.played?a.won/a.played:0,pB=b.played?b.won/b.played:0;
     if(pB!==pA) return pB-pA;
     return b.won-a.won;
   });
 }
 
-function getAllPlayers(){return [...new Set(MATCHES.flatMap(m=>[m.w,m.l]))].sort();}
+function getAllPlayers(){return [].concat.apply([],[MATCHES.map(function(m){return m.w;}),MATCHES.map(function(m){return m.l;})]).filter(function(v,i,a){return a.indexOf(v)===i;}).sort();}
 
 function pct(a,b){return (a+b)?Math.round(a/(a+b)*100):0;}
 
 function getStreak(name){
-  const pm=[...MATCHES].filter(m=>m.w===name||m.l===name).sort((a,b)=>b.date.localeCompare(a.date));
+  var pm=MATCHES.filter(function(m){return m.w===name||m.l===name;}).sort(function(a,b){return b.date.localeCompare(a.date);});
   if(!pm.length) return {type:'',count:0};
-  const first=pm[0].w===name?'w':'l';
-  let count=1;
-  for(let i=1;i<pm.length;i++){
-    if((pm[i].w===name?'w':'l')===first) count++; else break;
-  }
-  return {type:first,count};
+  var first=pm[0].w===name?'w':'l';
+  var count=1;
+  for(var i=1;i<pm.length;i++){if((pm[i].w===name?'w':'l')===first)count++;else break;}
+  return {type:first,count:count};
 }
 
 function getAchievements(name,ranking){
-  const pm=MATCHES.filter(m=>m.w===name||m.l===name);
-  const pw=pm.filter(m=>m.w===name).length;
-  const winPct=pm.length?pw/pm.length:0;
-  const s=getStreak(name);
-  const pos=ranking.findIndex(p=>p.name===name);
-  const sorted=[...pm].sort((a,b)=>a.date.localeCompare(b.date));
-  const firstWon=sorted.length>0&&sorted[0].w===name;
-  const a=[];
+  var pm=MATCHES.filter(function(m){return m.w===name||m.l===name;});
+  var pw=pm.filter(function(m){return m.w===name;}).length;
+  var winPct=pm.length?pw/pm.length:0;
+  var s=getStreak(name);
+  var pos=ranking.findIndex(function(p){return p.name===name;});
+  var sorted=pm.slice().sort(function(a,b){return a.date.localeCompare(b.date);});
+  var firstWon=sorted.length>0&&sorted[0].w===name;
+  var a=[];
   if(pm.length>=1) a.push({i:'🎾',n:'Debut',d:'Jugó su primer partido'});
   if(firstWon) a.push({i:'⚡',n:'Debut Ganador',d:'Ganó su primer partido'});
   if(pm.length>=10) a.push({i:'⭐',n:'10 Partidos',d:'Jugó 10 o más partidos'});
@@ -303,12 +288,12 @@ function getAchievements(name,ranking){
   return a;
 }
 
-let tab='dashboard',search='',selPlayer='';
+var tab='dashboard',search='',selPlayer='';
 
 function animateCount(el,target,duration){
-  const start=performance.now();
+  var start=performance.now();
   function update(now){
-    const p=Math.min((now-start)/duration,1);
+    var p=Math.min((now-start)/duration,1);
     el.textContent=Math.round((1-Math.pow(1-p,3))*target);
     if(p<1) requestAnimationFrame(update);
   }
@@ -338,8 +323,7 @@ function renderDashboard(){
   var ranking=buildRanking();
   var allPlayers=getAllPlayers();
   var top3=ranking.slice(0,3);
-  var recent=[].concat(MATCHES).sort(function(a,b){return b.date.localeCompare(a.date);}).slice(0,5);
-  var monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio'};
+  var monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio','08':'Agosto'};
   var byMonth={};
   MATCHES.forEach(function(m){var mo=m.date.slice(5,7);byMonth[mo]=(byMonth[mo]||0)+1;});
   var maxMonth=Math.max.apply(null,Object.values(byMonth));
@@ -352,8 +336,7 @@ function renderDashboard(){
   var bestPct=ranking.filter(function(p){return p.played>=3;}).sort(function(a,b){return (b.won/b.played)-(a.won/a.played);})[0];
   var allAchievements=[];
   ranking.forEach(function(p){
-    var achv=getAchievements(p.name,ranking);
-    achv.filter(function(a){return ['💎','👑','💪','🏆','🌟'].indexOf(a.i)>=0;}).forEach(function(a){allAchievements.push({player:p.name,icon:a.i,name:a.n});});
+    getAchievements(p.name,ranking).filter(function(a){return ['💎','👑','💪','🏆','🌟'].indexOf(a.i)>=0;}).forEach(function(a){allAchievements.push({player:p.name,icon:a.i,name:a.n});});
   });
 
   var html='<div class="page"><div class="section-title">Dashboard</div><div class="section-sub">Liga 2026 · Análisis completo</div>';
@@ -369,18 +352,16 @@ function renderDashboard(){
   html+='<div class="card"><div class="card-title">🏆 Top 3 del ranking</div>';
   top3.forEach(function(p,i){
     var s=getStreak(p.name);
-    html+='<div class="top-player"><div style="font-size:18px;min-width:28px">'+(i===0?'🥇':i===1?'🥈':'🥉')+'</div><div style="flex:1"><div class="top-player-name" style="cursor:pointer" onclick="goToStats(\''+p.name+'\')">'+p.name+' <span style="font-size:10px;opacity:0.4">›</span></div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">'+p.played+' PJ · '+Math.round(p.won/p.played*100)+'% victorias</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><div class="top-player-pts">'+p.pts+' pts</div>'+(s.count>=2?'<span class="streak-badge '+(s.type==='w'?'streak-w':'streak-l')+'">'+(s.type==='w'?'🔥':'❄️')+' '+s.count+'</span>':'')+'</div></div>';
+    html+='<div class="top-player"><div style="font-size:18px;min-width:28px">'+(i===0?'🥇':i===1?'🥈':'🥉')+'</div><div style="flex:1"><div class="top-player-name" style="cursor:pointer" onclick="goToStats(\''+p.name+'\')">'+p.name+' <span style="font-size:10px;opacity:0.4">›</span></div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px">'+p.played+' PJ · '+Math.round(p.won/p.played*100)+'% victorias</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><div class="top-player-pts">'+p.pts+' pts</div>'+(s.count>=3?'<span class="streak-badge streak-w">🔥 '+s.count+'</span>':'')+'</div></div>';
   });
   html+='</div>';
 
   html+='<div class="card"><div class="card-title">📅 Actividad por mes</div>';
-  Object.entries(byMonth).sort().forEach(function(e){
-    var mo=e[0],cnt=e[1],barPct=Math.round(cnt/maxMonth*100);
-    html+='<div class="month-row"><div class="month-name">'+(monthNames[mo]||mo)+'</div><div style="flex:1;margin:0 12px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:'+barPct+'%"></div></div></div><div class="month-count">'+cnt+' 🎾</div></div>';
+  Object.entries(byMonth).sort().forEach(function(entry){
+    var mo=entry[0],cnt=entry[1];
+    html+='<div class="month-row"><div class="month-name">'+(monthNames[mo]||mo)+'</div><div style="flex:1;margin:0 12px"><div class="mini-bar-wrap"><div class="mini-bar" style="width:'+Math.round(cnt/maxMonth*100)+'%"></div></div></div><div class="month-count">'+cnt+' 🎾</div></div>';
   });
   html+='</div>';
-
-None
 
   if(streaks.length>0){
     html+='<div class="card"><div class="card-title">🔥 Rachas ganadoras activas</div>';
@@ -408,7 +389,7 @@ function renderRanking(){
   ranking.forEach(function(p,i){
     var s=getStreak(p.name);
     var pos=i===0?'<div class="ball-rank ball-rank-1"><span>1</span></div>':i===1?'<div class="ball-rank ball-rank-2"><span>2</span></div>':i===2?'<div class="ball-rank ball-rank-3"><span>3</span></div>':'<span style="font-size:15px;color:rgba(255,255,255,0.3)">#'+(i+1)+'</span>';
-    html+='<div class="rank-card '+(i===0?'top1':i===1?'top2':i===2?'top3':'')+'"><div class="rank-pos">'+pos+'</div><div style="flex:1"><div class="rank-name" onclick="goToStats(\''+p.name+'\')">'+p.name+' <span class="arrow">›</span></div><div class="rank-detail">'+p.played+' PJ · '+p.won+'G / '+p.lost+'P · '+(p.played?Math.round(p.won/p.played*100):0)+'%'+(s.count>=2?' <span class="streak-badge '+(s.type==='w'?'streak-w':'streak-l')+'" style="padding:2px 6px">'+(s.type==='w'?'🔥':'❄️')+s.count+'</span>':'')+'</div></div><div class="rank-pts"><div class="rank-pts-val" id="pts-'+i+'">0</div><div class="rank-pts-lbl">pts</div></div></div>';
+    html+='<div class="rank-card '+(i===0?'top1':i===1?'top2':i===2?'top3':'')+'"><div class="rank-pos">'+pos+'</div><div style="flex:1"><div class="rank-name" onclick="goToStats(\''+p.name+'\')">'+p.name+' <span class="arrow">›</span></div><div class="rank-detail">'+p.played+' PJ · '+p.won+'G / '+p.lost+'P · '+(p.played?Math.round(p.won/p.played*100):0)+'%'+(s.count>=3?' <span class="streak-badge '+(s.type==='w'?'streak-w':'streak-l')+'" style="padding:2px 6px">'+(s.type==='w'?'🔥':'❄️')+s.count+'</span>':'')+'</div></div><div class="rank-pts"><div class="rank-pts-val" id="pts-'+i+'">0</div><div class="rank-pts-lbl">pts</div></div></div>';
   });
   html+='</div></div>';
   return html;
@@ -427,16 +408,10 @@ function renderStats(){
     var sL=pm.reduce(function(a,m){return a+(m.w===selPlayer?m.lS:m.wS);},0);
     var pS=pct(sW,sL);
     var s=getStreak(selPlayer);
-    var sorted=[].concat(pm).sort(function(a,b){return b.date.localeCompare(a.date);});
-    var rivals={};
-    pm.forEach(function(m){var r=m.w===selPlayer?m.l:m.w;rivals[r]=(rivals[r]||0)+1;});
-    var topRival=Object.entries(rivals).sort(function(a,b){return b[1]-a[1];})[0];
-    var hardest=Object.entries(rivals).filter(function(e){return pm.some(function(m){return m.l===selPlayer&&m.w===e[0];});}).sort(function(a,b){
-      var aL=pm.filter(function(m){return m.l===selPlayer&&m.w===a[0];}).length;
-      var bL=pm.filter(function(m){return m.l===selPlayer&&m.w===b[0];}).length;
-      return bL-aL;
-    })[0];
+    var sorted=pm.slice().sort(function(a,b){return b.date.localeCompare(a.date);});
     var achv=getAchievements(selPlayer,ranking);
+    var rivalesJugados=pm.map(function(m){return m.w===selPlayer?m.l:m.w;});
+    var pendientes=players.filter(function(p){return p!==selPlayer&&rivalesJugados.indexOf(p)<0;}).sort();
 
     if(s.count>=2){
       body+='<div class="card" style="border:1px solid '+(s.type==='w'?'rgba(82,212,138,0.3)':'rgba(224,82,82,0.3)')+'"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:28px">'+(s.type==='w'?'🔥':'❄️')+'</span><div><div style="font-weight:700;color:#fff">'+(s.type==='w'?'Racha ganadora':'Racha perdedora')+'</div><div style="font-size:12px;color:rgba(255,255,255,0.5)">'+s.count+' partidos consecutivos '+(s.type==='w'?'ganados':'perdidos')+'</div></div></div></div>';
@@ -445,17 +420,13 @@ function renderStats(){
     body+='<div class="card"><div class="card-title">% Victorias vs Derrotas</div>'+statBar(p,pw+' ganados',pl+' perdidos','#3a7bd5')+'</div>';
     body+='<div class="card"><div class="card-title">% Sets Ganados vs Perdidos</div>'+statBar(pS,sW+' sets ganados',sL+' sets perdidos','#2d9e6b')+'</div>';
 
-None
-
     if(achv.length>0){
       body+='<div class="card"><div class="card-title">🏅 Logros obtenidos ('+achv.length+')</div>';
-      achv.forEach(function(a){
-        body+='<div class="achievement-badge"><div class="ach-icon">'+a.i+'</div><div><div class="ach-name">'+a.n+'</div><div class="ach-desc">'+a.d+'</div></div></div>';
-      });
+      achv.forEach(function(a){body+='<div class="achievement-badge"><div class="ach-icon">'+a.i+'</div><div><div class="ach-name">'+a.n+'</div><div class="ach-desc">'+a.d+'</div></div></div>';});
       body+='</div>';
     }
 
-    body+='<div class="card"><div class="card-title">Historial de partidos</div>';
+    body+='<div class="card"><div class="card-title">📋 Historial de partidos</div>';
     sorted.forEach(function(m){
       var won=m.w===selPlayer;
       var rival=won?m.l:m.w;
@@ -463,13 +434,10 @@ None
     });
     body+='</div>';
 
-    var allP=getAllPlayers();
-    var rivalesJugados=pm.map(function(m){return m.w===selPlayer?m.l:m.w;});
-    var pendientes=allP.filter(function(p){return p!==selPlayer&&rivalesJugados.indexOf(p)<0;}).sort();
     if(pendientes.length>0){
       body+='<div class="card"><div class="card-title">⏳ Partidos pendientes ('+pendientes.length+')</div>';
-      pendientes.forEach(function(p){
-        body+='<div class="player-history-item" style="border-left:3px solid rgba(255,255,255,0.15)"><div class="player-history-name" style="color:rgba(255,255,255,0.7)">vs '+p+'</div><div class="player-history-date">⏳ Pendiente</div></div>';
+      pendientes.forEach(function(rival){
+        body+='<div class="player-history-item" style="border-left:3px solid rgba(255,255,255,0.15)"><div class="player-history-name" style="color:rgba(255,255,255,0.7)">vs '+rival+'</div><div class="player-history-date">⏳ Pendiente</div></div>';
       });
       body+='</div>';
     }
@@ -480,7 +448,7 @@ None
 
 function renderHistory(){
   var filtered=search?MATCHES.filter(function(m){return m.w.toLowerCase().indexOf(search.toLowerCase())>=0||m.l.toLowerCase().indexOf(search.toLowerCase())>=0;}):MATCHES;
-  var sorted=[].concat(filtered).sort(function(a,b){return b.date.localeCompare(a.date);});
+  var sorted=filtered.slice().sort(function(a,b){return b.date.localeCompare(a.date);});
   var html='<div class="page"><div class="section-title">Historial</div><div class="section-sub">'+MATCHES.length+' partidos registrados</div><input type="text" placeholder="🔍 Buscar jugador..." value="'+search+'" oninput="search=this.value;render()"/><div>';
   sorted.forEach(function(m){
     html+='<div class="history-item" style="border-left:3px solid #52d48a"><div class="history-names">'+m.w+' <span style="color:rgba(255,255,255,0.3);font-weight:400">vs</span> '+m.l+'</div><div class="history-detail">📅 '+m.date+' · 🏟️ Arcilla · <b style="color:rgba(255,255,255,0.7)">'+m.score+'</b></div><div class="history-result" style="color:#52d48a">✅ Ganó '+m.w+'</div></div>';
@@ -505,12 +473,6 @@ function render(){
 }
 
 render();
-
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.getRegistrations().then(function(regs){
-    regs.forEach(function(reg){ reg.unregister(); });
-  });
-}
 </script>
 </body>
 </html>
