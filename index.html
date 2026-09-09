@@ -334,7 +334,7 @@ function renderDashboard(){
   var ranking=buildRanking();
   var allPlayers=getAllPlayers();
   var top3=ranking.slice(0,3);
-  var monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio','08':'Agosto'};
+  var monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio','08':'Agosto','09':'Septiembre'};
   var byMonth={};
   MATCHES.forEach(function(m){var mo=m.date.slice(5,7);byMonth[mo]=(byMonth[mo]||0)+1;});
   var maxMonth=Math.max.apply(null,Object.values(byMonth));
