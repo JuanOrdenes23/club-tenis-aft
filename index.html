@@ -263,6 +263,7 @@ var MATCHES=[
   {id:157,w:"Jaime Mendoza",l:"Cristian Vega",date:"2026-10-03",score:"6-4 6-3",wS:2,lS:0},
   {id:158,w:"Rigoberto Herrera",l:"Álvaro Barros",date:"2026-10-03",score:"7-6 6-4",wS:2,lS:0},
   {id:159,w:"Carlos Villablanca",l:"Patricio Mahla",date:"2026-10-04",score:"7-5 2-6 10-7",wS:2,lS:1},
+  {id:160,w:"Rigoberto Herrera",l:"Juan Díaz Sánchez",date:"2026-10-10",score:"6-1 7-5",wS:2,lS:0},
 ];
 
 function buildRanking(){
@@ -347,7 +348,7 @@ function renderDashboard(){
   var ranking=buildRanking();
   var allPlayers=getAllPlayers();
   var top3=ranking.slice(0,3);
-  var monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio','08':'Agosto','09':'Septiembre'};
+  var monthNames={'03':'Marzo','04':'Abril','05':'Mayo','06':'Junio','07':'Julio','08':'Agosto','09':'Septiembre','10':'Octubre','11':'Noviembre','12':'Diciembre'};
   var byMonth={};
   MATCHES.forEach(function(m){var mo=m.date.slice(5,7);byMonth[mo]=(byMonth[mo]||0)+1;});
   var maxMonth=Math.max.apply(null,Object.values(byMonth));
